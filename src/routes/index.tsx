@@ -246,6 +246,7 @@ const NAV = [
   { id: "society", label: "Society" },
   { id: "shift", label: "Shift" },
   { id: "glossary", label: "Glossary" },
+  { id: "browser", label: "Browser" },
 ];
 
 function StickyNav({
@@ -1355,6 +1356,51 @@ function ManifestoPage() {
               </div>
             ))}
           </dl>
+        </Reveal>
+      </Section>
+
+      {/* 12b — BROWSER */}
+      <Section id="browser">
+        <Reveal>
+          <SectionHeading
+            eyebrow="§ 14 · The first browser"
+            title={<>dBrowser speaks every web.</>}
+          />
+        </Reveal>
+        <Reveal delay={120}>
+          <p className="mt-6 max-w-3xl text-lg leading-relaxed text-muted-foreground">
+            The layer is open — anyone can build a client. The first is{" "}
+            <span className="text-foreground">dBrowser</span>, a native macOS
+            browser that speaks all of the webs at once: the{" "}
+            <span className="text-foreground">Web</span> of documents, the{" "}
+            <span className="text-foreground">Web&nbsp;2</span> of apps and APIs,
+            the <span className="text-foreground">Web&nbsp;3</span> of wallets and
+            chains — and now, the first to traverse the{" "}
+            <span className="text-foreground">Hyperactive Web</span> of agents and
+            capabilities, natively, with your node in control.
+          </p>
+          <div className="mt-8 grid gap-3 sm:grid-cols-4">
+            {[
+              ["Web", "documents — read"],
+              ["Web 2", "apps & APIs — interact"],
+              ["Web 3", "wallets & chains — own"],
+              ["Hyperactive", "agents & capabilities — delegate"],
+            ].map(([k, v]) => (
+              <div key={k} className="rounded-xl border hairline bg-card/40 p-4">
+                <div className="font-mono text-[0.7rem] uppercase tracking-[0.16em] text-foreground">{k}</div>
+                <div className="mt-1 text-[0.85rem] text-muted-foreground">{v}</div>
+              </div>
+            ))}
+          </div>
+          <a
+            href="https://dBrowser.app"
+            target="_blank"
+            rel="noreferrer"
+            className="mt-8 inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm text-primary-foreground transition-transform hover:scale-[1.02]"
+            style={{ background: "var(--gradient-accent)" }}
+          >
+            Get dBrowser →
+          </a>
         </Reveal>
       </Section>
 
