@@ -282,7 +282,7 @@ function StickyNav({
             style={{ background: "var(--gradient-accent)" }}
           />
           <span className="font-mono text-[0.72rem] uppercase tracking-[0.22em] text-muted-foreground">
-            The Capability Web
+            The Hyperactive Web
           </span>
         </a>
         <nav className="hidden lg:block">
@@ -482,7 +482,7 @@ function BeforeAfterDiagram() {
           parts: ["address", "document"],
         },
         {
-          tag: "Capability Web",
+          tag: "Hyperactive Web",
           line: "address + intent + schema + policy → action",
           desc: "A link returns a possible action. Following it can change the world.",
           parts: ["address", "intent", "schema", "policy", "action"],
@@ -678,16 +678,17 @@ function ManifestoPage() {
           </Reveal>
           <Reveal delay={80}>
             <h1 className="font-display mt-7 text-5xl leading-[0.98] tracking-tight text-foreground sm:text-7xl lg:text-[5.5rem]">
-              The <span className="text-gradient">Capability Web</span>
+              The <span className="text-gradient">Hyperactive Web</span>
             </h1>
           </Reveal>
           <Reveal delay={180}>
             <p className="mt-8 max-w-2xl text-balance text-lg leading-relaxed text-muted-foreground sm:text-xl">
-              The web was a library of documents you could read. The Capability
-              Web is a fabric of capabilities you can{" "}
-              <span className="text-foreground">invoke</span> — the same
-              internet, one layer up. And in it, you have a place: a node that
-              is yours, that remembers for you and acts on your behalf.
+              The web was a quiet library of documents you could read. The
+              Hyperactive Web is alive — a{" "}
+              <span className="text-foreground">buzz</span> of agents discovering,
+              invoking, and paying each other across the network. The order is
+              yours: you keep it through your own node — one that remembers for
+              you, acts on your behalf, and answers only to you.
             </p>
           </Reveal>
           <Reveal delay={260}>
@@ -727,7 +728,7 @@ function ManifestoPage() {
             <div className="space-y-6 text-lg leading-relaxed text-muted-foreground">
               <p>
                 The Web and the InterPlanetary File System were never owned.
-                They were open protocols anyone could speak. The Capability Web
+                They were open protocols anyone could speak. The Hyperactive Web
                 is meant the same way —{" "}
                 <span className="text-foreground">a public layer, not a platform.</span>
               </p>
@@ -789,7 +790,7 @@ function ManifestoPage() {
           <p className="mx-auto mt-10 max-w-3xl text-balance text-center text-lg leading-relaxed text-muted-foreground">
             When intelligence is everywhere, the danger is that the human
             becomes a spectator — querying a cloud that doesn't know them. The
-            Capability Web answers this directly:{" "}
+            Hyperactive Web answers this directly:{" "}
             <span className="text-foreground">
               every person is represented by a personal node in the society of
               agents.
@@ -963,7 +964,7 @@ function ManifestoPage() {
               Decades ago, HyperCard gave us cards connected by buttons that
               didn't just navigate — they{" "}
               <span className="text-foreground">did things</span>. The document
-              web kept the link and dropped the button. The Capability Web
+              web kept the link and dropped the button. The Hyperactive Web
               restores it: a service card is a card; a capability link is a
               button that acts — now networked, governed, and self-describing.
             </p>
@@ -1053,7 +1054,7 @@ function ManifestoPage() {
             <p className="text-lg leading-relaxed text-muted-foreground">
               The web gave us addresses and links but never a native way to{" "}
               <span className="text-foreground">prove who is on the other end</span>
-              , and never a way to pay. The Capability Web adds those two missing
+              , and never a way to pay. The Hyperactive Web adds those two missing
               layers. Identity is anchored in DNS — the same root of trust that
               already names the web — via the emerging{" "}
               <a
@@ -1105,7 +1106,7 @@ function ManifestoPage() {
           <Reveal delay={120} className="lg:col-span-7">
             <p className="text-lg leading-relaxed text-muted-foreground">
               Some capabilities cost money — data, compute, a booking fee. The
-              capability web revives HTTP's dormant{" "}
+              hyperactive web revives HTTP's dormant{" "}
               <span className="text-foreground">402 Payment Required</span>: a
               provider answers a paid request with a payment challenge, your node
               authorizes through a wallet or a shared payment token, and the
@@ -1155,7 +1156,7 @@ function ManifestoPage() {
               <span className="text-foreground">siloed</span> — MCP tools don't
               know about A2A agents, neither renders through A2UI without bespoke
               glue, and today's agent stacks are hand-wired one orchestration at a
-              time. The Capability Web is the layer that makes them{" "}
+              time. The Hyperactive Web is the layer that makes them{" "}
               <span className="text-foreground">compose</span>. A contract address
               names what is wanted, so any provider on any protocol can satisfy
               it; a capability link carries the schema and risk, so one
@@ -1220,7 +1221,7 @@ function ManifestoPage() {
         <Reveal>
           <SectionHeading
             eyebrow="§ 13 · At a glance"
-            title={<>Web → Capability Web.</>}
+            title={<>Web → Hyperactive Web.</>}
           />
         </Reveal>
         <Reveal delay={140}>
@@ -1232,7 +1233,7 @@ function ManifestoPage() {
                     World Wide Web
                   </th>
                   <th className="px-4 py-4 font-mono text-[0.7rem] uppercase tracking-[0.18em] text-muted-foreground sm:px-6">
-                    Capability Web
+                    Hyperactive Web
                   </th>
                 </tr>
               </thead>
@@ -1370,7 +1371,7 @@ function ManifestoPage() {
         <div className="relative mx-auto max-w-4xl text-center">
           <Reveal>
             <h2 className="font-display text-3xl leading-[1.05] sm:text-5xl lg:text-6xl">
-              The web let us reach the world's documents. The Capability Web
+              The web let us reach the world's documents. The Hyperactive Web
               lets us reach the world's{" "}
               <span className="text-gradient">capabilities</span> — and gives
               each of us a node within it: represented, remembered, in control.
@@ -1402,7 +1403,7 @@ function ManifestoPage() {
               style={{ background: "var(--gradient-accent)" }}
             />
             <span className="font-mono text-[0.7rem] uppercase tracking-[0.22em]">
-              The Capability Web
+              The Hyperactive Web
             </span>
           </div>
           <div className="italic">
