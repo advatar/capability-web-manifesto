@@ -96,8 +96,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "description", content: "Explains The Capability Web, an open internet layer for invoking actions, not just reading documents." },
       { property: "og:description", content: "Explains The Capability Web, an open internet layer for invoking actions, not just reading documents." },
       { name: "twitter:description", content: "Explains The Capability Web, an open internet layer for invoking actions, not just reading documents." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8b441392-e06f-430d-bc5a-8285bfcf345e/id-preview-b93d3329--57df74d1-cefa-4731-9d79-4a97daf2b7b2.lovable.app-1781427301237.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8b441392-e06f-430d-bc5a-8285bfcf345e/id-preview-b93d3329--57df74d1-cefa-4731-9d79-4a97daf2b7b2.lovable.app-1781427301237.png" },
+      { property: "og:image", content: "https://capability-web-manifesto.lovable.app/og-card.png" },
+      { name: "twitter:image", content: "https://capability-web-manifesto.lovable.app/og-card.png" },
     ],
     links: [
       { rel: "icon", type: "image/png", href: "/favicon.png" },
