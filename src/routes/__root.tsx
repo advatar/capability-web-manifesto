@@ -84,7 +84,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "A founding document for the Capability Web: an open layer of the internet where the hyperlink grows up into a capability link, and every person is a node — represented, remembered, in control.",
       },
       { name: "author", content: "The Capability Web" },
-      { property: "og:title", content: "The Capability Web" },
+      { property: "og:title", content: "The Capability Web — An open layer of the internet" },
       {
         property: "og:description",
         content:
@@ -92,6 +92,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "The Capability Web — An open layer of the internet" },
+      { name: "description", content: "Explains The Capability Web, an open internet layer for invoking actions, not just reading documents." },
+      { property: "og:description", content: "Explains The Capability Web, an open internet layer for invoking actions, not just reading documents." },
+      { name: "twitter:description", content: "Explains The Capability Web, an open internet layer for invoking actions, not just reading documents." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8b441392-e06f-430d-bc5a-8285bfcf345e/id-preview-b93d3329--57df74d1-cefa-4731-9d79-4a97daf2b7b2.lovable.app-1781427301237.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8b441392-e06f-430d-bc5a-8285bfcf345e/id-preview-b93d3329--57df74d1-cefa-4731-9d79-4a97daf2b7b2.lovable.app-1781427301237.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
