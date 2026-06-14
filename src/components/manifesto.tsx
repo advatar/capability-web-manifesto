@@ -470,3 +470,152 @@ export function HumanNodeDiagram() {
     </svg>
   );
 }
+
+// ---------- Interactive: anatomy of a capability call ----------
+
+const FLOW: { k: string; title: string; body: string; mono: string }[] = [
+  {
+    k: "Goal",
+    title: "You state a goal",
+    body: "“Find and book a refundable hotel in Stockholm.” Your node turns it into a plan — and composes the steps.",
+    mono: 'plan: search → book   book.hotelID = {"$ref":"search.results.0.id"}',
+  },
+  {
+    k: "Discover",
+    title: "Discover the service",
+    body: "Fetch the agent card; its skills become capabilities you can invoke. No app to install — just a well-known address.",
+    mono: "GET https://atlas.example/.well-known/agent-card.json",
+  },
+  {
+    k: "Identity",
+    title: "Verify who's speaking",
+    body: "The service's DNS-ID is checked before you trust it. Unverified means no trust — the claim is never taken at face value.",
+    mono: "dns-id · _agent.atlas.example  →  ✓ verified",
+  },
+  {
+    k: "Resolve",
+    title: "Address the capability, not the host",
+    body: "A contract address names what you want. Any provider that honors it can fulfill it — reads can come from anywhere, even cache.",
+    mono: "capability:sha256:9f2a…b4c1  →  2 providers",
+  },
+  {
+    k: "Search",
+    title: "Read-only runs free",
+    body: "Searching changes nothing, so it runs immediately and can be reconciled across providers or served from cache.",
+    mono: "search → { Nordic Light · 1450 SEK · refundable }",
+  },
+  {
+    k: "Confirm",
+    title: "High-risk pauses for you",
+    body: "Booking changes the world, so it stops at a confirmation gate. Nothing happens until you approve — by tap or by voice.",
+    mono: "book · financialOrLegal  →  requireConfirmation",
+  },
+  {
+    k: "Pay",
+    title: "Pay only when asked",
+    body: "A paid capability answers HTTP 402; your node authorizes within the limits you set, and the payment leaves a receipt.",
+    mono: 'HTTP 402 · MPP amount="0.02"  →  paid · receipt',
+  },
+  {
+    k: "Remembered",
+    title: "Result, remembered",
+    body: "The booking returns, and every step — identity, approval, receipt, invocation — is retained as provenance you can audit.",
+    mono: "booked · ATLAS-7741 · workflow trace ✓",
+  },
+];
+
+export function CapabilityFlow() {
+  const [i, setI] = useState(0);
+  const step = FLOW[i];
+  return (
+    <div className="rounded-2xl border hairline bg-card/50 p-5 sm:p-7">
+      <div className="flex flex-wrap items-center gap-1.5">
+        {FLOW.map((s, idx) => (
+          <button
+            key={s.k}
+            onClick={() => setI(idx)}
+            className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs transition-colors ${
+              idx === i ? "text-primary-foreground" : "text-muted-foreground hover:text-foreground"
+            }`}
+            style={idx === i ? { background: "var(--gradient-accent)" } : undefined}
+          >
+            <span className="font-mono text-[0.62rem] opacity-70">{idx + 1}</span>
+            {s.k}
+          </button>
+        ))}
+      </div>
+
+      <div className="mt-6 grid gap-5 sm:grid-cols-[1fr_auto] sm:items-end">
+        <div>
+          <div className="font-display text-2xl">{step.title}</div>
+          <p className="mt-2 max-w-xl leading-relaxed text-muted-foreground">{step.body}</p>
+          <div className="mt-4 rounded-lg border hairline bg-background/60 px-4 py-3 font-mono text-[0.8rem] break-all text-foreground/85">
+            {step.mono}
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setI((n) => Math.max(0, n - 1))}
+            disabled={i === 0}
+            aria-label="Previous step"
+            className="grid h-9 w-9 place-items-center rounded-md border hairline text-foreground/80 transition-colors hover:bg-accent disabled:opacity-40"
+          >
+            −
+          </button>
+          <button
+            onClick={() => setI((n) => Math.min(FLOW.length - 1, n + 1))}
+            disabled={i === FLOW.length - 1}
+            aria-label="Next step"
+            className="grid h-9 w-9 place-items-center rounded-md border hairline text-foreground/80 transition-colors hover:bg-accent disabled:opacity-40"
+          >
+            +
+          </button>
+        </div>
+      </div>
+
+      <div className="mt-5 h-1 w-full overflow-hidden rounded-full bg-muted">
+        <div
+          className="h-full rounded-full transition-all"
+          style={{ width: `${((i + 1) / FLOW.length) * 100}%`, background: "var(--gradient-accent)" }}
+        />
+      </div>
+    </div>
+  );
+}
+
+// ---------- Orchestration diagram ----------
+
+export function OrchestrationDiagram() {
+  return (
+    <div className="rounded-2xl border hairline bg-card/40 p-6">
+      <div className="mb-5 font-mono text-[0.65rem] uppercase tracking-[0.18em] text-muted-foreground">
+        one plan, composed
+      </div>
+      <div className="flex flex-col items-center gap-2.5">
+        <div className="grid w-full grid-cols-2 gap-3">
+          {[
+            ["search", "read-only · parallel"],
+            ["weather", "read-only · parallel"],
+          ].map(([t, s]) => (
+            <div key={t} className="rounded-xl border hairline bg-background/60 p-3 text-center">
+              <div className="font-mono text-sm text-foreground">{t}</div>
+              <div className="mt-1 text-[0.7rem] text-muted-foreground">{s}</div>
+            </div>
+          ))}
+        </div>
+        <div className="font-mono text-xs text-muted-foreground">↓ join via $ref</div>
+        <div className="w-full rounded-xl border hairline bg-background/60 p-3 text-center">
+          <div className="font-mono text-sm text-foreground">book</div>
+          <div className="mt-1 text-[0.7rem] text-muted-foreground">
+            hotelID = {"{ $ref: search.results.0.id }"} · gate: confirm
+          </div>
+        </div>
+        <div className="font-mono text-xs text-muted-foreground">↓</div>
+        <div className="w-full rounded-xl border border-dashed hairline p-3 text-center">
+          <div className="font-mono text-sm text-accent-openmind">retained</div>
+          <div className="mt-1 text-[0.7rem] text-muted-foreground">workflow trace · receipts · approvals</div>
+        </div>
+      </div>
+    </div>
+  );
+}

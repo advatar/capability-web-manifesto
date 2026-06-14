@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { OpenMindLink, Reveal, Section, SectionHeading } from "../components/manifesto";
+import { OpenMindLink, OrchestrationDiagram, Reveal, Section, SectionHeading } from "../components/manifesto";
 
 export const Route = createFileRoute("/protocols")({
   component: ProtocolsPage,
@@ -100,11 +100,8 @@ function ProtocolsPage() {
               composability of smart contracts, the addressing of IPFS, and the
               etiquette of the web — but for capabilities, and governed.
             </p>
-            <div className="mt-8 rounded-xl border hairline bg-card/40 p-4">
-              <div className="mb-1 font-mono text-[0.65rem] uppercase tracking-[0.18em] text-muted-foreground">
-                composition
-              </div>
-              <div className="font-mono text-[0.85rem] break-all text-foreground/85">search → premium-rates → book → confirm</div>
+            <div className="mt-8">
+              <OrchestrationDiagram />
             </div>
           </Reveal>
         </div>

@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import {
   BeforeAfterDiagram,
+  CapabilityFlow,
   Constellation,
   PlaceholderButton,
   Reveal,
@@ -113,10 +114,44 @@ function HomePage() {
         </Reveal>
       </Section>
 
+      {/* HOW IT WORKS — interactive */}
+      <Section id="how">
+        <Reveal>
+          <SectionHeading
+            eyebrow="§ 03 · How it works"
+            title={<>Anatomy of one capability call.</>}
+          />
+          <p className="mt-6 max-w-2xl leading-relaxed text-muted-foreground">
+            Discover, verify, address, run, gate, pay, remember. Step through a
+            single interaction — every stop is one of the things the Hyperactive
+            Web makes possible, and which your node keeps under control.
+          </p>
+        </Reveal>
+        <Reveal delay={160} className="mt-12">
+          <CapabilityFlow />
+        </Reveal>
+        <Reveal delay={220} className="mt-8">
+          <div className="flex flex-wrap items-center gap-3">
+            <a
+              href="https://hyperactive.network/demo"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm text-primary-foreground transition-transform hover:scale-[1.02]"
+              style={{ background: "var(--gradient-accent)" }}
+            >
+              Launch the travel demo →
+            </a>
+            <span className="text-sm text-muted-foreground">
+              A planner drives a real plan through the gates — search, pay, book — answerable by voice.
+            </span>
+          </div>
+        </Reveal>
+      </Section>
+
       {/* AT A GLANCE */}
       <Section id="shift">
         <Reveal>
-          <SectionHeading eyebrow="§ 03 · At a glance" title={<>Web → Hyperactive Web.</>} />
+          <SectionHeading eyebrow="§ 04 · At a glance" title={<>Web → Hyperactive Web.</>} />
         </Reveal>
         <Reveal delay={140}>
           <div className="mt-12 overflow-hidden rounded-2xl border hairline">
