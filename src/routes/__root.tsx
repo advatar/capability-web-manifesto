@@ -7,10 +7,83 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+
+const NAV = [
+  { to: "/", label: "Home" },
+  { to: "/protocols", label: "Protocols" },
+  { to: "/capabilities", label: "Capabilities" },
+  { to: "/you", label: "You" },
+  { to: "/browser", label: "Browser" },
+] as const;
+
+function Layout({ children }: { children: ReactNode }) {
+  const [isDark, setDark] = useState(true);
+  useEffect(() => setDark(document.documentElement.classList.contains("dark")), []);
+  const toggleTheme = () => {
+    const next = !isDark;
+    setDark(next);
+    document.documentElement.classList.toggle("dark", next);
+    try {
+      localStorage.setItem("theme", next ? "dark" : "light");
+    } catch {}
+  };
+
+  return (
+    <div className="min-h-screen bg-background text-foreground">
+      <header className="sticky top-0 z-40 border-b hairline bg-background/75 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-3 lg:px-10">
+          <Link to="/" className="flex min-w-0 items-center gap-2.5">
+            <span aria-hidden className="h-2 w-2 rounded-full" style={{ background: "var(--gradient-accent)" }} />
+            <span className="font-mono text-[0.72rem] uppercase tracking-[0.22em] text-muted-foreground">
+              The Hyperactive Web
+            </span>
+          </Link>
+          <nav className="hidden sm:block">
+            <ul className="flex items-center gap-1">
+              {NAV.map((n) => (
+                <li key={n.to}>
+                  <Link
+                    to={n.to}
+                    activeOptions={{ exact: n.to === "/" }}
+                    className="rounded-md px-2.5 py-1.5 text-xs transition-colors"
+                    activeProps={{ className: "text-foreground" }}
+                    inactiveProps={{ className: "text-muted-foreground hover:text-foreground" }}
+                  >
+                    {n.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+          <button
+            onClick={toggleTheme}
+            aria-label="Toggle theme"
+            className="rounded-md border hairline px-2.5 py-1.5 font-mono text-[0.7rem] uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:text-foreground"
+          >
+            {isDark ? "Light" : "Dark"}
+          </button>
+        </div>
+      </header>
+
+      {children}
+
+      <footer className="border-t hairline px-6 py-10 lg:px-10">
+        <div className="mx-auto flex max-w-6xl flex-col gap-4 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-3">
+            <span aria-hidden className="h-1.5 w-1.5 rounded-full" style={{ background: "var(--gradient-accent)" }} />
+            <span className="font-mono text-[0.7rem] uppercase tracking-[0.22em]">The Hyperactive Web</span>
+          </div>
+          <div className="italic">An open web of capabilities, with a place in it for you.</div>
+          <div className="text-xs">Products will be built on this commons. The commons is for everyone.</div>
+        </div>
+      </footer>
+    </div>
+  );
+}
 
 function NotFoundComponent() {
   return (
@@ -142,7 +215,9 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <Layout>
+        <Outlet />
+      </Layout>
     </QueryClientProvider>
   );
 }
