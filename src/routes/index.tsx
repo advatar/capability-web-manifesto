@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   BeforeAfterDiagram,
   CapabilityFlow,
@@ -132,15 +132,13 @@ function HomePage() {
         </Reveal>
         <Reveal delay={220} className="mt-8">
           <div className="flex flex-wrap items-center gap-3">
-            <a
-              href="https://hyperactive.network/demo"
-              target="_blank"
-              rel="noreferrer"
+            <Link
+              to="/demo"
               className="inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm text-primary-foreground transition-transform hover:scale-[1.02]"
               style={{ background: "var(--gradient-accent)" }}
             >
               Launch the travel demo →
-            </a>
+            </Link>
             <span className="text-sm text-muted-foreground">
               A planner drives a real plan through the gates — search, pay, book — answerable by voice.
             </span>

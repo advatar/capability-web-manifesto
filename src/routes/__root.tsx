@@ -18,6 +18,7 @@ const NAV = [
   { to: "/capabilities", label: "Capabilities" },
   { to: "/you", label: "You" },
   { to: "/browser", label: "Browser" },
+  { to: "/demo", label: "Demo" },
 ] as const;
 
 function Layout({ children }: { children: ReactNode }) {
