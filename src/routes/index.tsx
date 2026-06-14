@@ -240,6 +240,8 @@ const NAV = [
   { id: "cards", label: "Cards" },
   { id: "zoom", label: "Zoom" },
   { id: "ambient", label: "Ambient" },
+  { id: "identity", label: "Identity" },
+  { id: "payments", label: "Payments" },
   { id: "society", label: "Society" },
   { id: "shift", label: "Shift" },
   { id: "glossary", label: "Glossary" },
@@ -1037,7 +1039,107 @@ function ManifestoPage() {
         </div>
       </Section>
 
-      {/* 10 — SOCIETY */}
+      {/* 09 — IDENTITY */}
+      <Section id="identity">
+        <div className="grid gap-12 lg:grid-cols-12">
+          <Reveal className="lg:col-span-5">
+            <SectionHeading
+              eyebrow="§ 09 · Identity"
+              title={<>Who is speaking? Verifiable identity.</>}
+            />
+          </Reveal>
+          <Reveal delay={120} className="lg:col-span-7">
+            <p className="text-lg leading-relaxed text-muted-foreground">
+              The web gave us addresses and links but never a native way to{" "}
+              <span className="text-foreground">prove who is on the other end</span>
+              , and never a way to pay. The Capability Web adds those two missing
+              layers. Identity is anchored in DNS — the same root of trust that
+              already names the web — via the emerging{" "}
+              <a
+                href="https://datatracker.ietf.org/doc/draft-ihsanullah-dnsid/"
+                target="_blank"
+                rel="noreferrer"
+                className="text-foreground underline decoration-dotted underline-offset-4 hover:text-foreground/80"
+              >
+                DNS-ID
+              </a>{" "}
+              standard, so a node's name is verifiable rather than merely
+              asserted. Your personal node carries a sovereign, portable
+              identity; services prove who they are before you trust a
+              capability; and every capability link is bound to a named principal
+              you can check. Where DNS-ID isn't yet in place, today's node-issued
+              keys stand in as a shim — same shape, swappable underneath.
+            </p>
+            <div className="mt-8 grid gap-3 sm:grid-cols-2">
+              <div className="rounded-xl border hairline bg-card/40 p-4">
+                <div className="mb-1 font-mono text-[0.65rem] uppercase tracking-[0.18em] text-muted-foreground">
+                  agent identity
+                </div>
+                <div className="font-mono text-[0.85rem] break-all text-foreground/85">
+                  dns-id · _agent.atlas.example
+                </div>
+              </div>
+              <div className="rounded-xl border hairline bg-card/40 p-4">
+                <div className="mb-1 font-mono text-[0.65rem] uppercase tracking-[0.18em] text-muted-foreground">
+                  personal node · shim
+                </div>
+                <div className="font-mono text-[0.85rem] break-all text-foreground/85">
+                  node-key · openmind:self
+                </div>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </Section>
+
+      {/* 10 — PAYMENTS */}
+      <Section id="payments">
+        <div className="grid gap-12 lg:grid-cols-12">
+          <Reveal className="lg:col-span-5">
+            <SectionHeading
+              eyebrow="§ 10 · Economy"
+              title={<>Capabilities aren't all free.</>}
+            />
+          </Reveal>
+          <Reveal delay={120} className="lg:col-span-7">
+            <p className="text-lg leading-relaxed text-muted-foreground">
+              Some capabilities cost money — data, compute, a booking fee. The
+              capability web revives HTTP's dormant{" "}
+              <span className="text-foreground">402 Payment Required</span>: a
+              provider answers a paid request with a payment challenge, your node
+              authorizes through a wallet or a shared payment token, and the
+              request is retried with proof. It is payment-agnostic — stablecoins
+              or ordinary cards — and it is{" "}
+              <span className="text-foreground">just another gate</span>: nothing
+              is delivered until you authorize, and every payment leaves a
+              retained receipt. Because price lives with the provider, not the
+              capability, many providers can offer the same contract at different
+              prices — resolution becomes a market, and your node spends only
+              within the limits you set.
+            </p>
+            <div className="mt-8 grid gap-3 sm:grid-cols-2">
+              <div className="rounded-xl border hairline bg-card/40 p-4">
+                <div className="mb-1 font-mono text-[0.65rem] uppercase tracking-[0.18em] text-muted-foreground">
+                  402 challenge
+                </div>
+                <div className="font-mono text-[0.85rem] break-all text-foreground/85">
+                  MPP amount="0.02" currency="usd"
+                </div>
+              </div>
+              <div className="rounded-xl border hairline bg-card/40 p-4">
+                <div className="mb-1 font-mono text-[0.65rem] uppercase tracking-[0.18em] text-muted-foreground">
+                  retained receipt
+                </div>
+                <div className="font-mono text-[0.85rem] break-all text-foreground/85">
+                  paid · 0.02 USD · rail=card
+                </div>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </Section>
+
+      {/* 11 — SOCIETY */}
       <Section id="society">
         <Reveal>
           <figure className="mx-auto max-w-4xl text-center">
@@ -1054,7 +1156,7 @@ function ManifestoPage() {
         <div className="mt-20 grid gap-12 lg:grid-cols-12">
           <Reveal className="lg:col-span-5">
             <SectionHeading
-              eyebrow="§ 09 · Governed"
+              eyebrow="§ 11 · Governed"
               title={<>Not emergent magic. Governed — in your favor.</>}
             />
           </Reveal>
@@ -1079,7 +1181,7 @@ function ManifestoPage() {
       <Section id="shift">
         <Reveal>
           <SectionHeading
-            eyebrow="§ 10 · At a glance"
+            eyebrow="§ 12 · At a glance"
             title={<>Web → Capability Web.</>}
           />
         </Reveal>
@@ -1111,6 +1213,14 @@ function ManifestoPage() {
                     "You: a node in the society, represented and remembered",
                   ],
                   [
+                    "Identity: none / ad-hoc logins",
+                    "Identity: DNS-anchored (DNS-ID)",
+                  ],
+                  [
+                    "Payment: free to read",
+                    "Payment: pay-per-capability (402 / MPP)",
+                  ],
+                  [
                     "Memory: none — documents are stateless",
                     "Memory: OpenMind — a durable, portable ledger held by each node",
                   ],
@@ -1140,7 +1250,7 @@ function ManifestoPage() {
       <Section id="glossary">
         <Reveal>
           <SectionHeading
-            eyebrow="§ 11 · Vocabulary"
+            eyebrow="§ 13 · Vocabulary"
             title={<>Glossary.</>}
           />
         </Reveal>
@@ -1175,6 +1285,14 @@ function ManifestoPage() {
               [
                 "OpenMind",
                 "The open protocol of memory, identity, and provenance; how a personal node remembers, proves what was done, and carries a portable self.",
+              ],
+              [
+                "DNS-ID",
+                "DNS-anchored, verifiable identity for agents and nodes; today's node keys shim it until it is universal.",
+              ],
+              [
+                "402 / MPP",
+                "Payment as a gate: a paid capability is delivered only after your node authorizes, leaving a retained receipt.",
               ],
             ].map(([term, def]) => (
               <div
