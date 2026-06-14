@@ -242,6 +242,7 @@ const NAV = [
   { id: "ambient", label: "Ambient" },
   { id: "identity", label: "Identity" },
   { id: "payments", label: "Payments" },
+  { id: "composable", label: "Composable" },
   { id: "society", label: "Society" },
   { id: "shift", label: "Shift" },
   { id: "glossary", label: "Glossary" },
@@ -1139,6 +1140,43 @@ function ManifestoPage() {
         </div>
       </Section>
 
+      {/* 10b — COMPOSABLE */}
+      <Section id="composable">
+        <div className="grid gap-12 lg:grid-cols-12">
+          <Reveal className="lg:col-span-5">
+            <SectionHeading
+              eyebrow="§ 11 · Composable"
+              title={<>Capabilities call each other like functions.</>}
+            />
+          </Reveal>
+          <Reveal delay={120} className="lg:col-span-7">
+            <p className="text-lg leading-relaxed text-muted-foreground">
+              The base protocols are real but{" "}
+              <span className="text-foreground">siloed</span> — MCP tools don't
+              know about A2A agents, neither renders through A2UI without bespoke
+              glue, and today's agent stacks are hand-wired one orchestration at a
+              time. The Capability Web is the layer that makes them{" "}
+              <span className="text-foreground">compose</span>. A contract address
+              names what is wanted, so any provider on any protocol can satisfy
+              it; a capability link carries the schema and risk, so one
+              capability's output flows into the next without custom plumbing; and
+              affordances let a result advertise its own valid next actions, so
+              flows assemble themselves instead of being scripted. It borrows the
+              composability of smart contracts, the addressing of IPFS, and the
+              etiquette of the web — but for capabilities, and governed.
+            </p>
+            <div className="mt-8 rounded-xl border hairline bg-card/40 p-4">
+              <div className="mb-1 font-mono text-[0.65rem] uppercase tracking-[0.18em] text-muted-foreground">
+                composition
+              </div>
+              <div className="font-mono text-[0.85rem] break-all text-foreground/85">
+                search → premium-rates → book → confirm
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </Section>
+
       {/* 11 — SOCIETY */}
       <Section id="society">
         <Reveal>
@@ -1156,7 +1194,7 @@ function ManifestoPage() {
         <div className="mt-20 grid gap-12 lg:grid-cols-12">
           <Reveal className="lg:col-span-5">
             <SectionHeading
-              eyebrow="§ 11 · Governed"
+              eyebrow="§ 12 · Governed"
               title={<>Not emergent magic. Governed — in your favor.</>}
             />
           </Reveal>
@@ -1181,7 +1219,7 @@ function ManifestoPage() {
       <Section id="shift">
         <Reveal>
           <SectionHeading
-            eyebrow="§ 12 · At a glance"
+            eyebrow="§ 13 · At a glance"
             title={<>Web → Capability Web.</>}
           />
         </Reveal>
@@ -1221,6 +1259,10 @@ function ManifestoPage() {
                     "Payment: pay-per-capability (402 / MPP)",
                   ],
                   [
+                    "Composition: bespoke glue per integration",
+                    "Composition: capabilities compose like functions",
+                  ],
+                  [
                     "Memory: none — documents are stateless",
                     "Memory: OpenMind — a durable, portable ledger held by each node",
                   ],
@@ -1250,7 +1292,7 @@ function ManifestoPage() {
       <Section id="glossary">
         <Reveal>
           <SectionHeading
-            eyebrow="§ 13 · Vocabulary"
+            eyebrow="§ 14 · Vocabulary"
             title={<>Glossary.</>}
           />
         </Reveal>
@@ -1293,6 +1335,10 @@ function ManifestoPage() {
               [
                 "402 / MPP",
                 "Payment as a gate: a paid capability is delivered only after your node authorizes, leaving a retained receipt.",
+              ],
+              [
+                "Composability",
+                "Capabilities call each other like functions across vendors and protocols — flows assemble themselves instead of being hand-wired.",
               ],
             ].map(([term, def]) => (
               <div
