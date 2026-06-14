@@ -618,6 +618,18 @@ function HumanNodeDiagram() {
       >
         YOU
       </text>
+      <text
+        x={cx}
+        y={cy + 12.5}
+        textAnchor="middle"
+        className="fill-accent-openmind"
+        style={{
+          font: "1.8px var(--font-mono)",
+          letterSpacing: "0.06em",
+        }}
+      >
+        OpenMind
+      </text>
     </svg>
   );
 }
@@ -824,9 +836,9 @@ function ManifestoPage() {
 
         <Reveal delay={300}>
           <p className="mx-auto mt-14 max-w-2xl text-center text-sm text-muted-foreground">
-            Memory substrates that take this shape (such as{" "}
-            <Mono>OpenMind</Mono>) are how a personal node remembers — but the
-            role is open: your node, your memory, your rules.
+            Your node speaks <span className="font-mono text-[0.92em] text-accent-openmind">OpenMind</span> — the open protocol of memory, identity, and
+            provenance. It is how your node remembers, proves what was done in your name, and stays portably yours across every service. The role is open and the memory is yours; <span className="font-mono text-[0.92em] text-accent-openmind">OpenMind</span> is the shared
+            language that makes it possible.
           </p>
         </Reveal>
       </Section>
@@ -877,7 +889,7 @@ function ManifestoPage() {
       <Section id="protocols">
         <Reveal>
           <SectionHeading
-            eyebrow="§ 05 · Four, one fabric"
+            eyebrow="§ 05 · The protocols, one fabric"
             title={<>The protocols.</>}
           />
         </Reveal>
@@ -892,7 +904,7 @@ function ManifestoPage() {
             {
               k: "MCP",
               t: "The substrate.",
-              d: "The materials — the tools and resources an agent draws on.",
+              d: "The substrate of tools and resources an agent draws on.",
             },
             {
               k: "A2UI",
@@ -900,14 +912,19 @@ function ManifestoPage() {
               d: "Safe, native, agent-generated interfaces rendered across platforms without running arbitrary code.",
             },
             {
+              k: "OpenMind",
+              t: "Memory, identity, and provenance.",
+              d: "The open protocol by which a node remembers everything it has seen, said, retrieved, and done; proves what happened; and carries a portable, durable self across services. It is what lets a personal node represent a human: persistent memory under the person's control, with an auditable trail behind every action.",
+            },
+            {
               k: "Capability Links",
               t: "The connective tissue.",
-              d: "Typed, policy-aware links that bind discovery, tools, and surfaces into something you can navigate.",
+              d: "Typed, policy-aware links that bind discovery, tools, surfaces, and memory into something you can navigate.",
             },
           ].map((p, i) => (
             <Reveal key={p.k} delay={i * 80}>
               <div className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-6 border-b hairline px-6 py-7 last:border-b-0 sm:grid-cols-[160px_1fr_auto] sm:items-baseline sm:px-10">
-                <div className="font-mono text-sm tracking-wide text-gradient">
+                <div className={`font-mono text-sm tracking-wide ${p.k === "OpenMind" ? "text-accent-openmind" : "text-gradient"}`}>
                   {p.k}
                 </div>
                 <div className="col-span-2 sm:col-span-1">
@@ -924,8 +941,7 @@ function ManifestoPage() {
 
         <Reveal delay={200}>
           <p className="mt-8 max-w-2xl text-balance text-sm text-muted-foreground">
-            A2A is the etiquette, MCP the materials, A2UI the workspace,
-            capability links the contracts.
+            A2A is the etiquette, MCP the materials, A2UI the workspace, OpenMind the memory — and the self that remembers. Capability links are the contracts that bind them.
           </p>
         </Reveal>
       </Section>
@@ -1053,7 +1069,7 @@ function ManifestoPage() {
               why anything was done; you can reverse what should be reversible.
               Trust comes not because intelligence appears from nowhere, but
               because every action is explicit, accountable, and answerable to
-              a human node.
+              a human node. That retained, auditable trail is not an afterthought — it is <span className="font-mono text-[0.92em] text-accent-openmind">OpenMind</span> doing its work: every action remembered, attributable, and answerable to a human node.
             </p>
           </Reveal>
         </div>
@@ -1093,6 +1109,10 @@ function ManifestoPage() {
                   [
                     "You: a user at a browser",
                     "You: a node in the society, represented and remembered",
+                  ],
+                  [
+                    "Memory: none — documents are stateless",
+                    "Memory: OpenMind — a durable, portable ledger held by each node",
                   ],
                   ["Verb: read", "Verb: do"],
                 ].map(([a, b], i, arr) => (
@@ -1151,6 +1171,10 @@ function ManifestoPage() {
               [
                 "Registry",
                 "The public square where services advertise their capabilities.",
+              ],
+              [
+                "OpenMind",
+                "The open protocol of memory, identity, and provenance; how a personal node remembers, proves what was done, and carries a portable self.",
               ],
             ].map(([term, def]) => (
               <div
