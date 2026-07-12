@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { OpenMindLink, OrchestrationDiagram, Reveal, Section, SectionHeading } from "../components/manifesto";
 
 export const Route = createFileRoute("/protocols")({
@@ -75,6 +75,17 @@ function ProtocolsPage() {
             A2A is the etiquette, MCP the materials, A2UI the workspace, <OpenMindLink /> the
             memory — and the self that remembers. Capability links are the
             contracts that bind them.
+          </p>
+        </Reveal>
+
+        <Reveal delay={260}>
+          <p className="mt-4 max-w-2xl text-balance text-sm text-muted-foreground">
+            And at the edge of every guarded service stands a doorkeeper:{" "}
+            <Link to="/x403" className="text-foreground underline decoration-dotted underline-offset-4 hover:opacity-80">
+              x403
+            </Link>{" "}
+            composes x401 identity and x402 payment into a single signed offer — capabilities
+            instead of scrapeable documents.
           </p>
         </Reveal>
       </Section>
