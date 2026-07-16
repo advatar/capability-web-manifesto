@@ -9,7 +9,7 @@ export const Route = createFileRoute("/humancard")({
       {
         name: "description",
         content:
-          "HumanCard is the human profile of a Hyperactive Service Card: your personal node publishes what you offer, what your agents may handle, and exactly what requires you — with authorship and authority explicit.",
+          "HumanCard is the human profile of a Hyperactive Service Card: your personal node publishes what you offer, what your agents may handle, and exactly what requires you — with resumable fulfilment, authorship, and authority explicit.",
       },
     ],
   }),
@@ -88,6 +88,32 @@ const CARD_EXAMPLE = `{
     "assurances": [{ "claim": "professional-role", "credential": "…/vc" }]
   }]
 }`;
+
+const FULFILLMENT_FLOW = `discover → request → conditional offer
+                     ↓
+          human commitment accepted
+                     ↓
+ delegated preparation → human judgment
+                     ↓
+          result + retained provenance`;
+
+const FULFILLMENT_STEPS = [
+  {
+    k: "01 · Plan",
+    t: "Human work is a capability plan, not a round trip.",
+    d: "A request can interleave delegated preparation with the commitments only a person can clear: accept, review, approve, or sign.",
+  },
+  {
+    k: "02 · Pause",
+    t: "The task waits without pretending to be finished.",
+    d: "The provider can pause while its person decides. The task is Codable and revisioned, so a node can persist it and resume it later.",
+  },
+  {
+    k: "03 · Account",
+    t: "The result keeps the whole chain visible.",
+    d: "Preparation, human decisions, delivery, and the mandate stay attributable. The receipt says who acted for whom — never that a node was the person.",
+  },
+] as const;
 
 function HumanCardPage() {
   return (
@@ -209,11 +235,56 @@ function HumanCardPage() {
         </div>
       </Section>
 
+      {/* FULFILMENT */}
+      <Section id="fulfilment">
+        <div className="grid gap-12 lg:grid-cols-12">
+          <Reveal className="lg:col-span-5">
+            <SectionHeading
+              eyebrow="§ 04 · Human fulfilment"
+              title={<>The human is a stage in the capability plan.</>}
+            />
+          </Reveal>
+          <Reveal delay={120} className="lg:col-span-7">
+            <p className="text-lg leading-relaxed text-muted-foreground">
+              HumanCard is the first human profile of this broader capability
+              model. The lifecycle itself belongs to the Hyperactive fabric: a
+              plan can pause for human consent or judgment, resume after hours
+              or days, and deliver a result whose authorship stays explicit.
+            </p>
+            <div className="mt-8">
+              <Code>{FULFILLMENT_FLOW}</Code>
+            </div>
+            <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+              The same capability link can negotiate terms through{" "}
+              <Link to="/x403" className="text-foreground underline decoration-dotted underline-offset-4 hover:opacity-80">
+                x403
+              </Link>
+              , then hand a provider-side human commitment to the personal
+              node. No requester-supplied proof can stand in for the person's
+              decision.
+            </p>
+          </Reveal>
+        </div>
+        <div className="mt-12 grid gap-5 md:grid-cols-3">
+          {FULFILLMENT_STEPS.map((step, i) => (
+            <Reveal key={step.k} delay={i * 90}>
+              <article className="h-full rounded-2xl border hairline bg-card/40 p-7">
+                <div className="font-mono text-[0.7rem] uppercase tracking-[0.18em] text-muted-foreground">
+                  {step.k}
+                </div>
+                <h3 className="font-display mt-3 text-2xl">{step.t}</h3>
+                <p className="mt-3 leading-relaxed text-muted-foreground">{step.d}</p>
+              </article>
+            </Reveal>
+          ))}
+        </div>
+      </Section>
+
       {/* CORRECTIONS */}
       <Section id="rules">
         <Reveal>
           <SectionHeading
-            eyebrow="§ 04 · What it gets right by construction"
+            eyebrow="§ 05 · What it gets right by construction"
             title={<>Sovereignty is in the data model, not the marketing.</>}
           />
         </Reveal>
