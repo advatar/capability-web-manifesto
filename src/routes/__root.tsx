@@ -153,22 +153,22 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "The Hyperactive Web — An open layer of the internet" },
+      { title: "The Hyperactive Web / Web4 — An open capability layer" },
       {
         name: "description",
         content:
-          "A founding document for the Hyperactive Web: an open layer of the internet where the hyperlink grows up into a capability link, and every person is a node — represented, remembered, in control.",
+          "A founding document for the Hyperactive Web / Web4: an open capability layer where the hyperlink grows up into a capability link, profiles make principals discoverable, and every person can be represented, remembered, and in control.",
       },
       { name: "author", content: "The Hyperactive Web" },
-      { property: "og:title", content: "The Hyperactive Web — An open layer of the internet" },
+      { property: "og:title", content: "The Hyperactive Web / Web4 — An open capability layer" },
       {
         property: "og:description",
         content:
-          "The web was a library of documents you could read. The Hyperactive Web is a fabric of capabilities you can invoke — the same internet, one layer up.",
+          "The web was a library of documents you could read. The Hyperactive Web / Web4 is a fabric of capabilities and profile-specific Service Cards you can invoke — the same internet, one layer up.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "The Hyperactive Web — An open layer of the internet" },
+      { name: "twitter:title", content: "The Hyperactive Web / Web4 — An open capability layer" },
       { name: "description", content: "Explains The Hyperactive Web, an open internet layer for invoking actions, not just reading documents." },
       { property: "og:description", content: "Explains The Hyperactive Web, an open internet layer for invoking actions, not just reading documents." },
       { name: "twitter:description", content: "Explains The Hyperactive Web, an open internet layer for invoking actions, not just reading documents." },

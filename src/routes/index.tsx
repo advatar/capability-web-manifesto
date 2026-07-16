@@ -28,7 +28,7 @@ function HomePage() {
         <div className="relative mx-auto max-w-6xl px-6 pb-28 pt-28 sm:pt-40 lg:px-10 lg:pb-40">
           <Reveal>
             <div className="font-mono text-[0.72rem] uppercase tracking-[0.28em] text-muted-foreground">
-              An open layer of the internet
+              An open Web4 architecture for the internet
             </div>
           </Reveal>
           <Reveal delay={80}>
@@ -38,8 +38,8 @@ function HomePage() {
           </Reveal>
           <Reveal delay={180}>
             <p className="mt-8 max-w-2xl text-balance text-lg leading-relaxed text-muted-foreground sm:text-xl">
-              The web was a quiet library of documents you could read. The
-              Hyperactive Web is alive — a <span className="text-foreground">buzz</span> of
+              The web was a quiet library of documents you could read. Web4, as
+              the Hyperactive Web, is alive — a <span className="text-foreground">buzz</span> of
               agents discovering, invoking, and paying each other across the
               network. The order is yours: you keep it through your own node —
               one that remembers for you, acts on your behalf, and answers only
@@ -169,7 +169,7 @@ function HomePage() {
                   ["Transport: HTTP", "Transport: A2A / MCP / open protocols"],
                   ["Address: URL", "Address: capability / service name"],
                   ["Link: hyperlink → a document", "Link: capability link → an action"],
-                  ["Node: web page", "Node: service card"],
+                  ["Node: web page", "Node: profile-specific Service Card"],
                   ["Renderer: the browser", "Renderer: a zoomable surface"],
                   ["You: a user at a browser", "You: a node in the society, represented and remembered"],
                   ["Identity: none / ad-hoc logins", "Identity: DNS-anchored (DNS-ID)"],
