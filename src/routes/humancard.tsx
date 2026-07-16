@@ -38,6 +38,25 @@ const THREE_IDS = [
   { k: "The publisher", v: "identity", d: "The personal node that publishes and operates the card." },
 ] as const;
 
+const PROFILE_FAMILY = [
+  {
+    k: "HumanCard",
+    d: "Human-specific semantics: principal, personal node, offers, mandate, human commitments, and authorship.",
+  },
+  {
+    k: "Organization profile",
+    d: "Organizational authority, delegation, jurisdiction, and accountable people or services behind an offer.",
+  },
+  {
+    k: "AgentCard projection",
+    d: "An interoperability view of a node: the same capability links projected into the A2A ecosystem.",
+  },
+  {
+    k: "Device / service profile",
+    d: "Principal-specific identity and policy for devices, knowledge services, and future kinds of providers.",
+  },
+] as const;
+
 const CORRECTIONS = [
   {
     t: "A human is a principal, not an endpoint.",
@@ -200,11 +219,39 @@ function HumanCardPage() {
         </Reveal>
       </Section>
 
+      {/* PROFILE FAMILY */}
+      <Section id="profiles">
+        <Reveal>
+          <SectionHeading
+            eyebrow="§ 03 · One foundation, many profiles"
+            title={<>HumanCard is the first profile, not a separate protocol.</>}
+          />
+        </Reveal>
+        <Reveal delay={100}>
+          <p className="mt-8 max-w-3xl text-lg leading-relaxed text-muted-foreground">
+            The Hyperactive Web standardizes one Service Card and one capability
+            link vocabulary. Profiles add the semantics of the principal without
+            rebuilding discovery, policy, identity, payment, or provenance for
+            every kind of provider.
+          </p>
+        </Reveal>
+        <div className="mt-10 grid gap-5 sm:grid-cols-2">
+          {PROFILE_FAMILY.map((profile, i) => (
+            <Reveal key={profile.k} delay={i * 70}>
+              <article className="h-full rounded-2xl border hairline bg-card/40 p-7">
+                <div className="font-mono text-lg text-gradient">{profile.k}</div>
+                <p className="mt-3 leading-relaxed text-muted-foreground">{profile.d}</p>
+              </article>
+            </Reveal>
+          ))}
+        </div>
+      </Section>
+
       {/* THE CARD */}
       <Section id="shape">
         <Reveal>
           <SectionHeading
-            eyebrow="§ 03 · A profile, not a protocol"
+            eyebrow="§ 04 · A profile, not a protocol"
             title={<>It's your Service Card, wearing a human profile.</>}
           />
         </Reveal>
@@ -240,7 +287,7 @@ function HumanCardPage() {
         <div className="grid gap-12 lg:grid-cols-12">
           <Reveal className="lg:col-span-5">
             <SectionHeading
-              eyebrow="§ 04 · Human fulfilment"
+              eyebrow="§ 05 · Human fulfilment"
               title={<>The human is a stage in the capability plan.</>}
             />
           </Reveal>
@@ -284,7 +331,7 @@ function HumanCardPage() {
       <Section id="rules">
         <Reveal>
           <SectionHeading
-            eyebrow="§ 05 · What it gets right by construction"
+            eyebrow="§ 06 · What it gets right by construction"
             title={<>Sovereignty is in the data model, not the marketing.</>}
           />
         </Reveal>
