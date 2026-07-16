@@ -146,10 +146,42 @@ function HomePage() {
         </Reveal>
       </Section>
 
+      {/* A2UI PROFILE RENDITIONS */}
+      <Section id="renditions">
+        <Reveal>
+          <SectionHeading eyebrow="§ 04 · A2UI renditions" title={<>One card fabric, many projections.</>} />
+          <p className="mt-6 max-w-2xl leading-relaxed text-muted-foreground">
+            A2UI turns the same Web4 Service Card contract into a responsive,
+            steerable surface. The profile changes the meaning; identity,
+            capabilities, policy, and provenance stay portable.
+          </p>
+        </Reveal>
+        <Reveal delay={140} className="mt-12">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              ["HumanCard", "Human", "Attention, consent, judgment"],
+              ["OrganizationCard", "Organization", "Mandates, teams, authority"],
+              ["AgentCard", "Autonomous agent", "Delegated plans and tools"],
+              ["Service Card", "Device / service", "Composable machine capability"],
+            ].map(([name, kind, detail]) => (
+              <div key={name} className="rounded-2xl border hairline bg-muted/20 p-5">
+                <div className="font-mono text-[0.65rem] uppercase tracking-[0.18em] text-muted-foreground">{kind}</div>
+                <h3 className="font-display mt-4 text-2xl">{name}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{detail}</p>
+                <div className="mt-6 flex items-center gap-2 font-mono text-[0.65rem] uppercase tracking-[0.14em] text-foreground/60">
+                  <span className="h-2 w-2 rounded-full bg-[var(--accent-cyan)]" />
+                  A2UI surface
+                </div>
+              </div>
+            ))}
+          </div>
+        </Reveal>
+      </Section>
+
       {/* AT A GLANCE */}
       <Section id="shift">
         <Reveal>
-          <SectionHeading eyebrow="§ 04 · At a glance" title={<>Web → Hyperactive Web.</>} />
+          <SectionHeading eyebrow="§ 05 · At a glance" title={<>Web → Hyperactive Web.</>} />
         </Reveal>
         <Reveal delay={140}>
           <div className="mt-12 overflow-hidden rounded-2xl border hairline">
