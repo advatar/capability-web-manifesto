@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "0.1",
+  "valid": [
+    { "name": "minimal service card", "path": "valid/minimal-service-card.json" },
+    { "name": "Human Profile service card", "path": "valid/human-profile-service-card.json" },
+    { "name": "unknown extension profile", "path": "valid/extension-profile-service-card.json" }
+  ],
+  "invalid": [
+    {
+      "name": "missing version",
+      "path": "invalid/missing-version.json",
+      "expectedCodes": ["version.unsupported"]
+    },
+    {
+      "name": "unsupported version",
+      "path": "invalid/unsupported-version.json",
+      "expectedCodes": ["version.unsupported"]
+    },
+    {
+      "name": "profile set mismatch",
+      "path": "invalid/profile-set-mismatch.json",
+      "expectedCodes": ["profile.setMismatch"]
+    },
+    {
+      "name": "protocol prefix and method mismatch",
+      "path": "invalid/method-prefix-mismatch.json",
+      "expectedCodes": ["capability.href.methodMismatch"]
+    },
+    {
+      "name": "publisher claims verification",
+      "path": "invalid/preverified-identity.json",
+      "expectedCodes": ["identity.preverified"]
+    },
+    {
+      "name": "duplicate capability identity",
+      "path": "invalid/duplicate-capability.json",
+      "expectedCodes": ["capability.duplicate"]
+    },
+    {
+      "name": "Human Profile subject mismatch",
+      "path": "invalid/human-subject-mismatch.json",
+      "expectedCodes": ["human.subjectMismatch"]
+    },
+    {
+      "name": "Human Profile offer without a Capability Link",
+      "path": "invalid/human-offer-without-capability.json",
+      "expectedCodes": ["human.offer.missingCapability"]
+    }
+  ],
+  "contractVectors": [
+    { "name": "location-independent hotel search", "path": "contract/search-hotels.json" }
+  ]
+}

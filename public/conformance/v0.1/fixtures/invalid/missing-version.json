@@ -1,0 +1,14 @@
+{
+  "id": "https://weather.example/cards/unversioned",
+  "name": "Unversioned Weather Service",
+  "description": "Legacy-decodable, but not v0.1-conforming.",
+  "provider": "weather.example",
+  "serviceURI": "https://weather.example/.well-known/agent-card.json",
+  "adapterID": "weather",
+  "supportedProtocols": [],
+  "authRequired": false,
+  "profiles": [],
+  "profileData": {},
+  "capabilities": [],
+  "metadata": {}
+}

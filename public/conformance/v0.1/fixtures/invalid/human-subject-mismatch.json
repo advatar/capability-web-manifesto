@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "0.1",
+  "id": "https://alex.example/cards/mismatched-human",
+  "name": "Mismatched Human",
+  "description": "Card and profile name different accountable principals.",
+  "provider": "alex-node",
+  "serviceURI": "a2a+https://alex.example/.well-known/agent-card.json",
+  "adapterID": "alex-node",
+  "supportedProtocols": ["a2a"],
+  "authRequired": false,
+  "subject": {
+    "kind": "human",
+    "id": "https://alex.example/",
+    "aliases": [],
+    "metadata": {}
+  },
+  "profiles": ["https://hyperactive.network/profiles/human/v0.1"],
+  "profileData": {
+    "https://hyperactive.network/profiles/human/v0.1": {
+      "subject": {
+        "kind": "human",
+        "id": "https://someone-else.example/",
+        "aliases": [],
+        "metadata": {}
+      },
+      "offers": [],
+      "metadata": {}
+    }
+  },
+  "capabilities": [],
+  "metadata": {}
+}

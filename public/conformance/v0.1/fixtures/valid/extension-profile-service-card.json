@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "0.1",
+  "id": "https://cooperative.example/cards/organization",
+  "name": "Example Cooperative",
+  "description": "Demonstrates a profile extension without changing the core card.",
+  "provider": "cooperative-node",
+  "serviceURI": "https://cooperative.example/.well-known/agent-card.json",
+  "adapterID": "cooperative",
+  "supportedProtocols": ["openapi"],
+  "authRequired": false,
+  "subject": {
+    "kind": "organization",
+    "id": "https://cooperative.example/",
+    "displayName": "Example Cooperative",
+    "aliases": [],
+    "metadata": {}
+  },
+  "profiles": ["https://example.org/profiles/cooperative/v0.1"],
+  "profileData": {
+    "https://example.org/profiles/cooperative/v0.1": {
+      "membershipModel": "worker-owned",
+      "decisionCapability": "governance.vote"
+    }
+  },
+  "capabilities": [],
+  "metadata": {}
+}

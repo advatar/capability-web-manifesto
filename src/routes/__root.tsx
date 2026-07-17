@@ -13,15 +13,17 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
 const NAV = [
-  { to: "/", label: "Home" },
-  { to: "/protocols", label: "Protocols" },
-  { to: "/x403", label: "x403" },
-  { to: "/humancard", label: "HumanCard" },
-  { to: "/capabilities", label: "Capabilities" },
-  { to: "/you", label: "You" },
-  { to: "/browser", label: "Browser" },
-  { to: "/demo", label: "Demo" },
+  { href: "/#proposal", label: "Proposal" },
+  { href: "/#contract", label: "Contract" },
+  { href: "/#architecture", label: "Architecture" },
+  { href: "/#evidence", label: "Evidence" },
+  { href: "/#questions", label: "Questions" },
+  { href: "/demo", label: "Demo" },
 ] as const;
+
+const BRIEFING = "/docs/tim-berners-lee-briefing.md";
+const CONTRACT = "/docs/hyperactive-web-v0.1.md";
+const FIXTURES = "/conformance/v0.1/fixtures/manifest.json";
 
 function Layout({ children }: { children: ReactNode }) {
   const [isDark, setDark] = useState(true);
@@ -32,32 +34,47 @@ function Layout({ children }: { children: ReactNode }) {
     document.documentElement.classList.toggle("dark", next);
     try {
       localStorage.setItem("theme", next ? "dark" : "light");
-    } catch {}
+    } catch {
+      // Storage can be unavailable in privacy-restricted browsing contexts.
+    }
   };
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <a
+        href="#page-content"
+        className="fixed left-4 top-4 z-50 -translate-y-24 rounded-md bg-foreground px-4 py-2 text-sm font-medium text-background transition-transform focus:translate-y-0"
+      >
+        Skip to content
+      </a>
       <header className="sticky top-0 z-40 border-b hairline bg-background/75 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-3 lg:px-10">
-          <Link to="/" className="flex min-w-0 items-center gap-2.5">
-            <span aria-hidden className="h-2 w-2 rounded-full" style={{ background: "var(--gradient-accent)" }} />
-            <span className="font-mono text-[0.72rem] uppercase tracking-[0.22em] text-muted-foreground">
-              The Hyperactive Web
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-4 gap-y-2 px-6 py-3 lg:px-10">
+          <Link
+            to="/"
+            className="flex min-w-0 items-center gap-2.5 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            <span
+              aria-hidden
+              className="h-2 w-2 shrink-0 rounded-full"
+              style={{ background: "var(--gradient-accent)" }}
+            />
+            <span className="truncate font-mono text-[0.68rem] uppercase tracking-[0.2em] text-muted-foreground sm:text-[0.72rem]">
+              Hyperactive Web <span className="text-foreground/50">v0.1</span>
             </span>
           </Link>
-          <nav className="hidden sm:block">
-            <ul className="flex items-center gap-1">
+          <nav
+            aria-label="Primary"
+            className="order-3 w-full overflow-x-auto sm:order-none sm:ml-auto sm:w-auto"
+          >
+            <ul className="flex min-w-max items-center gap-1">
               {NAV.map((n) => (
-                <li key={n.to}>
-                  <Link
-                    to={n.to}
-                    activeOptions={{ exact: n.to === "/" }}
-                    className="rounded-md px-2.5 py-1.5 text-xs transition-colors"
-                    activeProps={{ className: "text-foreground" }}
-                    inactiveProps={{ className: "text-muted-foreground hover:text-foreground" }}
+                <li key={n.href}>
+                  <a
+                    href={n.href}
+                    className="block rounded-md px-2.5 py-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   >
                     {n.label}
-                  </Link>
+                  </a>
                 </li>
               ))}
             </ul>
@@ -65,23 +82,54 @@ function Layout({ children }: { children: ReactNode }) {
           <button
             onClick={toggleTheme}
             aria-label="Toggle theme"
-            className="rounded-md border hairline px-2.5 py-1.5 font-mono text-[0.7rem] uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:text-foreground"
+            className="ml-auto rounded-md border hairline px-2.5 py-1.5 font-mono text-[0.66rem] uppercase tracking-[0.16em] text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:ml-0"
           >
             {isDark ? "Light" : "Dark"}
           </button>
         </div>
       </header>
 
-      {children}
+      <div id="page-content">{children}</div>
 
       <footer className="border-t hairline px-6 py-10 lg:px-10">
-        <div className="mx-auto flex max-w-6xl flex-col gap-4 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center gap-3">
-            <span aria-hidden className="h-1.5 w-1.5 rounded-full" style={{ background: "var(--gradient-accent)" }} />
-            <span className="font-mono text-[0.7rem] uppercase tracking-[0.22em]">The Hyperactive Web</span>
+        <div className="mx-auto grid max-w-6xl gap-8 text-sm text-muted-foreground sm:grid-cols-[1fr_auto] sm:items-end">
+          <div>
+            <div className="flex items-center gap-3">
+              <span
+                aria-hidden
+                className="h-1.5 w-1.5 rounded-full"
+                style={{ background: "var(--gradient-accent)" }}
+              />
+              <span className="font-mono text-[0.7rem] uppercase tracking-[0.22em]">
+                Hyperactive Web v0.1
+              </span>
+            </div>
+            <p className="mt-4 max-w-xl leading-relaxed">
+              An open experiment in portable, agent-readable Web affordances. Implemented for
+              review; not a W3C or IETF specification.
+            </p>
           </div>
-          <div className="italic">An open web of capabilities, with a place in it for you.</div>
-          <div className="text-xs">Products will be built on this commons. The commons is for everyone.</div>
+          <nav aria-label="Project resources">
+            <ul className="flex flex-wrap gap-x-5 gap-y-3 sm:justify-end">
+              {[
+                ["Briefing", BRIEFING],
+                ["Contract", CONTRACT],
+                ["Fixtures", FIXTURES],
+              ].map(([label, href]) => (
+                <li key={label}>
+                  <a
+                    className="underline decoration-dotted underline-offset-4 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    href={href}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {label}
+                    <span aria-hidden> ↗</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
       </footer>
     </div>
@@ -153,30 +201,43 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "The Hyperactive Web / Web4 — An open capability layer" },
+      { title: "Hyperactive Web v0.1 — A capability layer for the Web" },
       {
         name: "description",
         content:
-          "A founding document for the Hyperactive Web / Web4: an open capability layer where the hyperlink grows up into a capability link, profiles make principals discoverable, and every person can be represented, remembered, and in control.",
+          "A working experiment in portable, agent-readable Web affordances: normative v0.1 contract, Swift and TypeScript implementations, conformance fixtures, and a live demo.",
       },
-      { name: "author", content: "The Hyperactive Web" },
-      { property: "og:title", content: "The Hyperactive Web / Web4 — An open capability layer" },
+      { name: "author", content: "UniversalInteractionKit project" },
+      { name: "theme-color", content: "#090d1b" },
+      { property: "og:title", content: "Hyperactive Web v0.1 — Let the Web say what can be done" },
       {
         property: "og:description",
         content:
-          "The web was a library of documents you could read. The Hyperactive Web / Web4 is a fabric of capabilities and profile-specific Service Cards you can invoke — the same internet, one layer up.",
+          "Inspect a normative capability contract, two conforming runtime stacks, shared fixtures, a live demo, and the architectural questions still open.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://hyperactive.network/" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "The Hyperactive Web / Web4 — An open capability layer" },
-      { name: "description", content: "Explains The Hyperactive Web, an open internet layer for invoking actions, not just reading documents." },
-      { property: "og:description", content: "Explains The Hyperactive Web, an open internet layer for invoking actions, not just reading documents." },
-      { name: "twitter:description", content: "Explains The Hyperactive Web, an open internet layer for invoking actions, not just reading documents." },
-      { property: "og:image", content: "https://capability-web-manifesto.lovable.app/og-card.png" },
-      { name: "twitter:image", content: "https://capability-web-manifesto.lovable.app/og-card.png" },
+      { name: "twitter:title", content: "Hyperactive Web v0.1 — A capability layer for the Web" },
+      {
+        name: "twitter:description",
+        content:
+          "Working code and a precise question: can invocable affordances become portable across agent protocols while authority stays local?",
+      },
+      { property: "og:image", content: "https://hyperactive.network/og-card.png" },
+      { property: "og:image:alt", content: "The Capability Web — an open layer of the internet" },
+      {
+        name: "twitter:image",
+        content: "https://hyperactive.network/og-card.png",
+      },
+      {
+        name: "twitter:image:alt",
+        content: "The Capability Web — an open layer of the internet",
+      },
     ],
     links: [
       { rel: "icon", type: "image/png", href: "/favicon.png" },
+      { rel: "canonical", href: "https://hyperactive.network/" },
       { rel: "stylesheet", href: appCss },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },

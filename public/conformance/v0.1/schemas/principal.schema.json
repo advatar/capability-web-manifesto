@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hyperactive.network/schemas/v0.1/principal.schema.json",
+  "title": "Hyperactive Web v0.1 Principal",
+  "type": "object",
+  "required": ["kind", "id", "aliases", "metadata"],
+  "properties": {
+    "kind": { "enum": ["human", "organization", "autonomous"] },
+    "id": { "type": "string", "format": "uri" },
+    "displayName": { "type": "string" },
+    "identity": { "$ref": "node-identity.schema.json" },
+    "aliases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type", "id"],
+        "properties": {
+          "type": { "type": "string", "minLength": 1 },
+          "id": { "type": "string", "minLength": 1 },
+          "bindingProof": { "type": "string", "minLength": 1 }
+        },
+        "additionalProperties": false
+      }
+    },
+    "metadata": { "type": "object" }
+  },
+  "additionalProperties": false
+}

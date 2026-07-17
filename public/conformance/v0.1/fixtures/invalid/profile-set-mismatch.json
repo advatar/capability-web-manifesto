@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "0.1",
+  "id": "https://example.com/cards/profile-mismatch",
+  "name": "Profile Mismatch",
+  "description": "Declares a profile without its document.",
+  "provider": "example",
+  "serviceURI": "https://example.com/.well-known/agent-card.json",
+  "adapterID": "example",
+  "supportedProtocols": [],
+  "authRequired": false,
+  "profiles": ["https://example.com/profiles/test/v0.1"],
+  "profileData": {},
+  "capabilities": [],
+  "metadata": {}
+}

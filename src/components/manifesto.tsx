@@ -7,20 +7,16 @@ export function Chip({ children }: { children: React.ReactNode }) {
 }
 
 export function Mono({ children }: { children: React.ReactNode }) {
-  return (
-    <span className="font-mono text-[0.92em] text-foreground/85">{children}</span>
-  );
+  return <span className="font-mono text-[0.92em] text-foreground/85">{children}</span>;
 }
 
 export function Reveal({
   children,
   delay = 0,
-  as: Tag = "div",
   className = "",
 }: {
   children: React.ReactNode;
   delay?: number;
-  as?: any;
   className?: string;
 }) {
   const ref = useRef<HTMLDivElement | null>(null);
@@ -42,9 +38,9 @@ export function Reveal({
     return () => io.disconnect();
   }, [delay]);
   return (
-    <Tag ref={ref as any} className={`reveal ${className}`}>
+    <div ref={ref} className={`reveal ${className}`}>
       {children}
-    </Tag>
+    </div>
   );
 }
 
@@ -64,9 +60,7 @@ export function SectionHeading({
           {eyebrow}
         </div>
       )}
-      <h2 className="font-display text-3xl leading-[1.05] text-foreground sm:text-5xl">
-        {title}
-      </h2>
+      <h2 className="font-display text-3xl leading-[1.05] text-foreground sm:text-5xl">{title}</h2>
     </div>
   );
 }
@@ -191,11 +185,25 @@ export function Constellation() {
         return null;
       })}
       {nodes.map((n, i) => (
-        <circle key={i} cx={n.x} cy={n.y} r={n.r * 0.35} fill="currentColor" className="text-foreground/55" />
+        <circle
+          key={i}
+          cx={n.x}
+          cy={n.y}
+          r={n.r * 0.35}
+          fill="currentColor"
+          className="text-foreground/55"
+        />
       ))}
       <g>
         <circle cx={human.x} cy={human.y} r="2.4" fill="url(#line)" />
-        <circle cx={human.x} cy={human.y} r="3.6" fill="none" stroke="url(#line)" strokeWidth="0.18">
+        <circle
+          cx={human.x}
+          cy={human.y}
+          r="3.6"
+          fill="none"
+          stroke="url(#line)"
+          strokeWidth="0.18"
+        >
           <animate attributeName="r" values="3.2;5.5;3.2" dur="4s" repeatCount="indefinite" />
           <animate attributeName="opacity" values="0.9;0.1;0.9" dur="4s" repeatCount="indefinite" />
         </circle>
@@ -223,7 +231,9 @@ const TIERS = [
     body: (
       <div className="space-y-2">
         <div className="font-display text-2xl">Atlas Cartography</div>
-        <div className="text-sm text-muted-foreground">A capable service. Primary action available.</div>
+        <div className="text-sm text-muted-foreground">
+          A capable service. Primary action available.
+        </div>
       </div>
     ),
   },
@@ -246,7 +256,8 @@ const TIERS = [
       <div className="space-y-3">
         <div className="font-display text-xl">Atlas Cartography</div>
         <div className="text-sm text-muted-foreground">
-          Full catalog of capabilities, each with a declared intent, expected inputs, and a stated risk level.
+          Full catalog of capabilities, each with a declared intent, expected inputs, and a stated
+          risk level.
         </div>
         <div className="flex flex-wrap gap-2 pt-1">
           <Chip>render.atlas</Chip>
@@ -267,7 +278,9 @@ const TIERS = [
         <div className="space-y-1.5 font-mono text-[0.78rem] leading-relaxed text-foreground/85">
           <div>capability:sha256:9f2a…b4c1</div>
           <div>a2a+https://atlas.commons.example/.well-known/agent</div>
-          <div className="text-muted-foreground">policy: ask-on-write · audit: retained · consent: per-action</div>
+          <div className="text-muted-foreground">
+            policy: ask-on-write · audit: retained · consent: per-action
+          </div>
         </div>
       </div>
     ),
@@ -310,7 +323,9 @@ export function ZoomDemo() {
               key={t.label}
               onClick={() => setTier(i)}
               className={`rounded-md px-3 py-2 text-left text-xs transition-colors ${
-                tier === i ? "bg-accent text-foreground" : "text-muted-foreground hover:text-foreground"
+                tier === i
+                  ? "bg-accent text-foreground"
+                  : "text-muted-foreground hover:text-foreground"
               }`}
             >
               <div className="font-mono text-[0.65rem] uppercase tracking-wider">Tier {i + 1}</div>
@@ -323,33 +338,6 @@ export function ZoomDemo() {
   );
 }
 
-// ---------- CTA placeholder ----------
-
-export function PlaceholderButton({
-  children,
-  variant = "ghost",
-}: {
-  children: React.ReactNode;
-  variant?: "primary" | "ghost";
-}) {
-  const [done, setDone] = useState(false);
-  const base = "inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm transition-all";
-  const styles =
-    variant === "primary" ? "text-primary-foreground" : "border hairline text-foreground hover:bg-accent";
-  return (
-    <button
-      onClick={() => {
-        setDone(true);
-        setTimeout(() => setDone(false), 2400);
-      }}
-      className={`${base} ${styles}`}
-      style={variant === "primary" ? { background: "var(--gradient-accent)" } : undefined}
-    >
-      {done ? "Noted — the commons will hear." : children}
-    </button>
-  );
-}
-
 // ---------- Diagrams ----------
 
 export function BeforeAfterDiagram() {
@@ -357,16 +345,14 @@ export function BeforeAfterDiagram() {
     <div className="grid gap-5 lg:grid-cols-2">
       {[
         {
-          tag: "World Wide Web",
-          line: "address → document",
-          desc: "A link returns a page. Worst case: 404.",
-          parts: ["address", "document"],
+          tag: "Existing Web foundations",
+          desc: "URIs identify resources. Representations, forms, HTTP methods, and typed links already describe interaction.",
+          parts: ["URI", "representation", "hypermedia control"],
         },
         {
-          tag: "Hyperactive Web",
-          line: "address + intent + schema + policy → action",
-          desc: "A link returns a possible action. Following it can change the world.",
-          parts: ["address", "intent", "schema", "policy", "action"],
+          tag: "The v0.1 experiment",
+          desc: "Carry a portable action contract across agent protocols, then evaluate authority and consent locally.",
+          parts: ["typed relation", "schemas", "binding", "policy cues"],
         },
       ].map((b) => (
         <div key={b.tag} className="rounded-2xl border hairline bg-card/50 p-6 sm:p-8">
@@ -430,7 +416,15 @@ export function HumanNodeDiagram() {
         const y = cy + r * Math.sin((o.angle * Math.PI) / 180);
         return (
           <g key={i}>
-            <line x1={cx} y1={cy} x2={x} y2={y} stroke="url(#hg)" strokeWidth="0.15" opacity="0.55" />
+            <line
+              x1={cx}
+              y1={cy}
+              x2={x}
+              y2={y}
+              stroke="url(#hg)"
+              strokeWidth="0.15"
+              opacity="0.55"
+            />
             <circle cx={x} cy={y} r="1.4" fill="currentColor" className="text-foreground/70" />
             <text
               x={x}
@@ -482,45 +476,51 @@ const FLOW: { k: string; title: string; body: string; mono: string }[] = [
   },
   {
     k: "Discover",
-    title: "Discover the service",
-    body: "Fetch the agent card; its skills become capabilities you can invoke. No app to install — just a well-known address.",
+    title: "Fetch a service description",
+    body: "The runtime retrieves a Service Card and reads its declared capabilities. Discovery reveals possibilities; it grants no authority.",
     mono: "GET https://atlas.example/.well-known/agent-card.json",
   },
   {
-    k: "Identity",
-    title: "Verify who's speaking",
-    body: "The service's DNS-ID is checked before you trust it. Unverified means no trust — the claim is never taken at face value.",
-    mono: "dns-id · _agent.atlas.example  →  ✓ verified",
+    k: "Validate",
+    title: "Reject malformed declarations",
+    body: "Schema, version, profile, identity-state, and method-binding invariants are checked before a declaration enters the runtime.",
+    mono: "schema v0.1 · profile invariants · binding rules  →  valid",
+  },
+  {
+    k: "Fingerprint",
+    title: "Compare the declared contract",
+    body: "Selected fields canonicalize to an exact digest. Matching digests mean matching declarations—not equivalent behavior or trustworthy providers.",
+    mono: "canonical JSON  →  sha256:9dd5871e…1341a12",
   },
   {
     k: "Resolve",
-    title: "Address the capability, not the host",
-    body: "A contract address names what you want. Any provider that honors it can fulfill it — reads can come from anywhere, even cache.",
-    mono: "capability:sha256:9f2a…b4c1  →  2 providers",
+    title: "Select a declared binding",
+    body: "A registry can locate declarations with the same digest and choose an adapter. The registry is an index, not proof of fulfillment.",
+    mono: "capability:sha256:9dd5…  →  provider-a · A2A adapter",
   },
   {
-    k: "Search",
-    title: "Read-only runs free",
-    body: "Searching changes nothing, so it runs immediately and can be reconciled across providers or served from cache.",
-    mono: "search → { Nordic Light · 1450 SEK · refundable }",
+    k: "Policy",
+    title: "Evaluate authority locally",
+    body: "The local policy checks credentials and confirmation requirements. v0.1 still consumes publisher-declared risk, which must be hardened.",
+    mono: "declaredRisk: financialOrLegal + local policy  →  confirm",
   },
   {
-    k: "Confirm",
-    title: "High-risk pauses for you",
-    body: "Booking changes the world, so it stops at a confirmation gate. Nothing happens until you approve — by tap or by voice.",
-    mono: "book · financialOrLegal  →  requireConfirmation",
+    k: "Consent",
+    title: "Pause before consequential action",
+    body: "When policy requires it, the runtime presents the action and waits. No invocation is dispatched until the user approves.",
+    mono: "book.hotel · confirmation required  →  awaiting decision",
   },
   {
-    k: "Pay",
-    title: "Pay only when asked",
-    body: "A paid capability answers HTTP 402; your node authorizes within the limits you set, and the payment leaves a receipt.",
-    mono: 'HTTP 402 · MPP amount="0.02"  →  paid · receipt',
+    k: "Invoke",
+    title: "Dispatch through the protocol adapter",
+    body: "The runtime invokes the selected A2A or MCP binding. Payment and authentication challenges can interrupt and resume the flow.",
+    mono: "adapter.invoke · HTTP 402/auth challenge · resume",
   },
   {
-    k: "Remembered",
-    title: "Result, remembered",
-    body: "The booking returns, and every step — identity, approval, receipt, invocation — is retained as provenance you can audit.",
-    mono: "booked · ATLAS-7741 · workflow trace ✓",
+    k: "Evidence",
+    title: "Retain a record of what occurred",
+    body: "The result, approvals, challenges, receipts, and adapter events become provenance records. They are evidence—not proof of correctness.",
+    mono: "result · approval · receipt · workflow trace  →  retained",
   },
 ];
 
@@ -576,7 +576,10 @@ export function CapabilityFlow() {
       <div className="mt-5 h-1 w-full overflow-hidden rounded-full bg-muted">
         <div
           className="h-full rounded-full transition-all"
-          style={{ width: `${((i + 1) / FLOW.length) * 100}%`, background: "var(--gradient-accent)" }}
+          style={{
+            width: `${((i + 1) / FLOW.length) * 100}%`,
+            background: "var(--gradient-accent)",
+          }}
         />
       </div>
     </div>
@@ -613,7 +616,9 @@ export function OrchestrationDiagram() {
         <div className="font-mono text-xs text-muted-foreground">↓</div>
         <div className="w-full rounded-xl border border-dashed hairline p-3 text-center">
           <div className="font-mono text-sm text-accent-openmind">retained</div>
-          <div className="mt-1 text-[0.7rem] text-muted-foreground">workflow trace · receipts · approvals</div>
+          <div className="mt-1 text-[0.7rem] text-muted-foreground">
+            workflow trace · receipts · approvals
+          </div>
         </div>
       </div>
     </div>

@@ -1,0 +1,58 @@
+{
+  "name": "location-independent hotel search",
+  "links": [
+    {
+      "rel": "travel.searchHotels",
+      "title": "Search hotels through provider A",
+      "href": "a2a+https://provider-a.example/skills/search-hotels",
+      "method": "delegate",
+      "adapterID": "provider-a",
+      "capabilityID": "hotel-search-a",
+      "inputSchema": {
+        "required": ["city"],
+        "properties": {
+          "refundableOnly": { "type": "boolean" },
+          "city": { "type": "string" }
+        },
+        "type": "object"
+      },
+      "outputSchema": {
+        "required": ["results"],
+        "properties": { "results": { "type": "array" } },
+        "type": "object"
+      },
+      "declaredRisk": "readOnly",
+      "requiresConfirmation": false,
+      "preferredSurface": "dynamicUI",
+      "metadata": { "region": "eu" }
+    },
+    {
+      "rel": "travel.searchHotels",
+      "title": "Search hotels through provider B",
+      "href": "mcp+https://provider-b.example/tools/search-hotels",
+      "method": "invoke",
+      "adapterID": "provider-b",
+      "capabilityID": "hotel-search-b",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "city": { "type": "string" },
+          "refundableOnly": { "type": "boolean" }
+        },
+        "required": ["city"]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": { "results": { "type": "array" } },
+        "required": ["results"]
+      },
+      "declaredRisk": "readOnly",
+      "requiresConfirmation": false,
+      "preferredSurface": "structuredData",
+      "metadata": { "region": "us", "price": "0.01" }
+    }
+  ],
+  "canonicalJSON": "{\"declaredRisk\":\"readOnly\",\"inputSchema\":{\"properties\":{\"city\":{\"type\":\"string\"},\"refundableOnly\":{\"type\":\"boolean\"}},\"required\":[\"city\"],\"type\":\"object\"},\"outputSchema\":{\"properties\":{\"results\":{\"type\":\"array\"}},\"required\":[\"results\"],\"type\":\"object\"},\"rel\":\"travel.searchHotels\",\"requiresConfirmation\":false}",
+  "sha256": "9dd5871ee750493004df1732f81e88d69569e784d59950b6c984eb58c1341a12",
+  "address": "capability:sha256:9dd5871ee750493004df1732f81e88d69569e784d59950b6c984eb58c1341a12"
+}

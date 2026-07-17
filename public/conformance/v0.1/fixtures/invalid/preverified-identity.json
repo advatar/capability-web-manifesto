@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "0.1",
+  "id": "https://example.com/cards/preverified",
+  "name": "Preverified Claim",
+  "description": "Incorrectly publishes consumer-local verification state.",
+  "provider": "example",
+  "serviceURI": "https://example.com/.well-known/agent-card.json",
+  "adapterID": "example",
+  "supportedProtocols": [],
+  "authRequired": false,
+  "identity": {
+    "scheme": "dns-id",
+    "id": "_agent.example.com",
+    "verified": true,
+    "metadata": {}
+  },
+  "profiles": [],
+  "profileData": {},
+  "capabilities": [],
+  "metadata": {}
+}

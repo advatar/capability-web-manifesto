@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hyperactive.network/schemas/v0.1/capability-link.schema.json",
+  "title": "Hyperactive Web v0.1 Capability Link",
+  "type": "object",
+  "required": [
+    "rel",
+    "title",
+    "href",
+    "method",
+    "adapterID",
+    "capabilityID",
+    "inputSchema",
+    "declaredRisk",
+    "requiresConfirmation",
+    "preferredSurface",
+    "metadata"
+  ],
+  "properties": {
+    "rel": { "type": "string", "minLength": 1, "pattern": "^[^\\s]+$" },
+    "title": { "type": "string", "minLength": 1 },
+    "href": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9+.-]*://.+$",
+      "description": "A transport URI or proto+transport URI."
+    },
+    "method": { "enum": ["delegate", "invoke", "call", "open", "read"] },
+    "adapterID": { "type": "string", "minLength": 1 },
+    "capabilityID": { "type": "string", "minLength": 1 },
+    "inputSchema": { "type": "object" },
+    "outputSchema": { "type": "object" },
+    "declaredRisk": {
+      "enum": [
+        "readOnly",
+        "lowImpactWrite",
+        "externalCommunication",
+        "financialOrLegal",
+        "credentialOrSecurity",
+        "unknown"
+      ]
+    },
+    "requiresConfirmation": { "type": "boolean" },
+    "preferredSurface": { "enum": ["text", "structuredData", "dynamicUI", "swiftUI", "realityKit"] },
+    "metadata": { "type": "object" }
+  },
+  "additionalProperties": false
+}

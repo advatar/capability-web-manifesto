@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "0.2",
+  "id": "https://weather.example/cards/public",
+  "name": "Weather Service",
+  "description": "Unsupported version.",
+  "provider": "weather.example",
+  "serviceURI": "https://weather.example/.well-known/agent-card.json",
+  "adapterID": "weather",
+  "supportedProtocols": [],
+  "authRequired": false,
+  "profiles": [],
+  "profileData": {},
+  "capabilities": [],
+  "metadata": {}
+}

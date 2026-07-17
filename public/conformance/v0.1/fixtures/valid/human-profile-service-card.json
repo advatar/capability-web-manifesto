@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "0.1",
+  "id": "https://alex.example/cards/human",
+  "name": "Alex Example",
+  "description": "Human-anchored architecture review capability.",
+  "provider": "alex-personal-node",
+  "serviceURI": "a2a+https://alex.example/.well-known/agent-card.json",
+  "adapterID": "alex-node",
+  "supportedProtocols": ["a2a", "x403"],
+  "authRequired": true,
+  "identity": {
+    "scheme": "dns-id",
+    "id": "_agent.alex.example",
+    "verified": false,
+    "metadata": {}
+  },
+  "subject": {
+    "kind": "human",
+    "id": "https://alex.example/",
+    "displayName": "Alex Example",
+    "aliases": [{ "type": "handle", "id": "@alex" }],
+    "metadata": {}
+  },
+  "profiles": ["https://hyperactive.network/profiles/human/v0.1"],
+  "profileData": {
+    "https://hyperactive.network/profiles/human/v0.1": {
+      "subject": {
+        "kind": "human",
+        "id": "https://alex.example/",
+        "displayName": "Alex Example",
+        "aliases": [{ "type": "handle", "id": "@alex" }],
+        "metadata": {}
+      },
+      "mandate": {
+        "scope": ["receive-requests", "prepare-drafts"],
+        "humanConfirmationRequired": ["final-review"],
+        "metadata": {}
+      },
+      "offers": [
+        {
+          "rel": "architecture.review",
+          "fulfillment": {
+            "modes": ["hybrid"],
+            "humanCommitments": [
+              { "stage": "final-review", "required": true, "description": "Alex reviews the final opinion." }
+            ]
+          },
+          "authority": { "effect": "non-binding-advice", "scope": "software-architecture" },
+          "availability": {
+            "mode": "negotiated",
+            "query": "a2a+https://alex.example/capabilities/availability"
+          },
+          "assurances": [],
+          "metadata": {}
+        }
+      ],
+      "metadata": {}
+    }
+  },
+  "capabilities": [
+    {
+      "rel": "architecture.review",
+      "title": "Request an architecture review",
+      "href": "a2a+https://alex.example/capabilities/architecture-review",
+      "method": "delegate",
+      "adapterID": "alex-node",
+      "capabilityID": "architecture-review",
+      "inputSchema": {
+        "type": "object",
+        "properties": { "artifact": { "type": "string", "format": "uri" } },
+        "required": ["artifact"]
+      },
+      "outputSchema": { "type": "object" },
+      "declaredRisk": "readOnly",
+      "requiresConfirmation": true,
+      "preferredSurface": "dynamicUI",
+      "metadata": {}
+    }
+  ],
+  "metadata": {}
+}

@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "0.1",
+  "id": "https://example.com/cards/method-mismatch",
+  "name": "Method Mismatch",
+  "description": "Uses an A2A prefix with an MCP invocation method.",
+  "provider": "example",
+  "serviceURI": "a2a+https://example.com/.well-known/agent-card.json",
+  "adapterID": "example",
+  "supportedProtocols": ["a2a"],
+  "authRequired": false,
+  "profiles": [],
+  "profileData": {},
+  "capabilities": [
+    {
+      "rel": "example.read",
+      "title": "Read",
+      "href": "a2a+https://example.com/capabilities/read",
+      "method": "invoke",
+      "adapterID": "example",
+      "capabilityID": "read",
+      "inputSchema": { "type": "object" },
+      "declaredRisk": "readOnly",
+      "requiresConfirmation": false,
+      "preferredSurface": "dynamicUI",
+      "metadata": {}
+    }
+  ],
+  "metadata": {}
+}

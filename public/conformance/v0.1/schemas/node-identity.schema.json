@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hyperactive.network/schemas/v0.1/node-identity.schema.json",
+  "title": "Hyperactive Web v0.1 Node Identity",
+  "type": "object",
+  "required": ["scheme", "id", "verified", "metadata"],
+  "properties": {
+    "scheme": { "enum": ["dns-id", "node-key"] },
+    "id": { "type": "string", "minLength": 1 },
+    "publicKey": { "type": "string", "minLength": 1 },
+    "verified": {
+      "const": false,
+      "description": "A publisher emits an unverified claim. Verification is a consumer-local result."
+    },
+    "metadata": { "type": "object" }
+  },
+  "additionalProperties": false
+}

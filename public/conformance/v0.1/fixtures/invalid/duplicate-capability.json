@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "0.1",
+  "id": "https://example.com/cards/duplicate-capability",
+  "name": "Duplicate Capability",
+  "description": "Repeats one adapter-local capability identity.",
+  "provider": "example",
+  "serviceURI": "https://example.com/.well-known/agent-card.json",
+  "adapterID": "example",
+  "supportedProtocols": [],
+  "authRequired": false,
+  "profiles": [],
+  "profileData": {},
+  "capabilities": [
+    {
+      "rel": "example.first",
+      "title": "First",
+      "href": "https://example.com/capabilities/shared",
+      "method": "call",
+      "adapterID": "example",
+      "capabilityID": "shared",
+      "inputSchema": { "type": "object" },
+      "declaredRisk": "readOnly",
+      "requiresConfirmation": false,
+      "preferredSurface": "dynamicUI",
+      "metadata": {}
+    },
+    {
+      "rel": "example.second",
+      "title": "Second",
+      "href": "https://example.com/capabilities/shared",
+      "method": "call",
+      "adapterID": "example",
+      "capabilityID": "shared",
+      "inputSchema": { "type": "object" },
+      "declaredRisk": "readOnly",
+      "requiresConfirmation": false,
+      "preferredSurface": "dynamicUI",
+      "metadata": {}
+    }
+  ],
+  "metadata": {}
+}

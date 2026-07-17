@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "0.1",
+  "id": "https://alex.example/cards/orphan-offer",
+  "name": "Orphan Human Offer",
+  "description": "Human offer has no matching generic Capability Link.",
+  "provider": "alex-node",
+  "serviceURI": "a2a+https://alex.example/.well-known/agent-card.json",
+  "adapterID": "alex-node",
+  "supportedProtocols": ["a2a"],
+  "authRequired": false,
+  "subject": {
+    "kind": "human",
+    "id": "https://alex.example/",
+    "aliases": [],
+    "metadata": {}
+  },
+  "profiles": ["https://hyperactive.network/profiles/human/v0.1"],
+  "profileData": {
+    "https://hyperactive.network/profiles/human/v0.1": {
+      "subject": {
+        "kind": "human",
+        "id": "https://alex.example/",
+        "aliases": [],
+        "metadata": {}
+      },
+      "offers": [
+        {
+          "rel": "architecture.missing",
+          "fulfillment": { "modes": ["human"], "humanCommitments": [] },
+          "assurances": [],
+          "metadata": {}
+        }
+      ],
+      "metadata": {}
+    }
+  },
+  "capabilities": [],
+  "metadata": {}
+}

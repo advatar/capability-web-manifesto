@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "0.1",
+  "id": "https://weather.example/cards/public",
+  "name": "Weather Service",
+  "description": "Provides current weather observations.",
+  "provider": "weather.example",
+  "serviceURI": "mcp+https://weather.example/.well-known/agent-card.json",
+  "adapterID": "weather",
+  "supportedProtocols": ["mcp"],
+  "authRequired": false,
+  "profiles": [],
+  "profileData": {},
+  "capabilities": [
+    {
+      "rel": "weather.current",
+      "title": "Read current weather",
+      "href": "mcp+https://weather.example/tools/current-weather",
+      "method": "invoke",
+      "adapterID": "weather",
+      "capabilityID": "current-weather",
+      "inputSchema": {
+        "type": "object",
+        "properties": { "city": { "type": "string" } },
+        "required": ["city"]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": { "temperatureC": { "type": "number" } },
+        "required": ["temperatureC"]
+      },
+      "declaredRisk": "readOnly",
+      "requiresConfirmation": false,
+      "preferredSurface": "dynamicUI",
+      "metadata": {}
+    }
+  ],
+  "metadata": {}
+}
