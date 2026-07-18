@@ -35,7 +35,9 @@ test("primary calls to action resolve to real routes or project resources", () =
   assert.match(home, /to="\/demo"/);
   assert.match(home, /\/docs\/tim-berners-lee-briefing\.md/);
   assert.match(home, /\/docs\/hyperactive-web-v0\.1\.md/);
+  assert.match(home, /\/docs\/draft-hyperactive-web-00\.md/);
   assert.match(home, /\/conformance\/v0\.1\/fixtures\/manifest\.json/);
+  assert.match(root, /\["RFC draft", RFC_DRAFT\]/);
 
   const navigationTargets = [...root.matchAll(/href: "\/#([a-z-]+)"/g)].map((match) => match[1]);
   const sectionTargets = new Set([...home.matchAll(/id="([a-z-]+)"/g)].map((match) => match[1]));
@@ -47,11 +49,13 @@ test("primary calls to action resolve to real routes or project resources", () =
 test("public evidence assets are complete and internally consistent", () => {
   const briefing = read("public/docs/tim-berners-lee-briefing.md");
   const contract = read("public/docs/hyperactive-web-v0.1.md");
+  const rfcDraft = read("public/docs/draft-hyperactive-web-00.md");
   const fixtureRoot = resolve(projectRoot, "public/conformance/v0.1/fixtures");
   const manifest = JSON.parse(read("public/conformance/v0.1/fixtures/manifest.json"));
 
   assert.match(briefing, /^# A Capability Layer for the Web/m);
   assert.match(contract, /^# Hyperactive Web .* Contract v0\.1/m);
+  assert.match(rfcDraft, /^# Hyperactive Web Service Cards and Capability Links/m);
   assert.equal(manifest.schemaVersion, "0.1");
   assert.equal(
     manifest.valid.length + manifest.invalid.length + manifest.contractVectors.length,
@@ -65,9 +69,11 @@ test("public evidence assets are complete and internally consistent", () => {
   const parentRoot = resolve(projectRoot, "..");
   const parentBriefing = resolve(parentRoot, "Docs/TimBernersLeeBriefing.md");
   const parentContract = resolve(parentRoot, "Docs/HyperactiveWebV0.1.md");
-  if (existsSync(parentBriefing) && existsSync(parentContract)) {
+  const parentRfcDraft = resolve(parentRoot, "Docs/draft-hyperactive-web-00.md");
+  if (existsSync(parentBriefing) && existsSync(parentContract) && existsSync(parentRfcDraft)) {
     assert.equal(briefing, readFileSync(parentBriefing, "utf8"));
     assert.equal(contract, readFileSync(parentContract, "utf8"));
+    assert.equal(rfcDraft, readFileSync(parentRfcDraft, "utf8"));
   }
 });
 

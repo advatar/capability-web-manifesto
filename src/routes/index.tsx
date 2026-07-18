@@ -14,6 +14,7 @@ export const Route = createFileRoute("/")({
 
 const BRIEFING = "/docs/tim-berners-lee-briefing.md";
 const CONTRACT = "/docs/hyperactive-web-v0.1.md";
+const RFC_DRAFT = "/docs/draft-hyperactive-web-00.md";
 const FIXTURES = "/conformance/v0.1/fixtures/manifest.json";
 
 const primaryLink =
@@ -165,6 +166,9 @@ function HomePage() {
             <div className="mt-7 flex flex-wrap gap-3">
               <ExternalLink href={CONTRACT} className={secondaryLink}>
                 Normative contract
+              </ExternalLink>
+              <ExternalLink href={RFC_DRAFT} className={secondaryLink}>
+                RFC-style draft
               </ExternalLink>
               <ExternalLink href={FIXTURES} className={secondaryLink}>
                 Conformance fixtures
