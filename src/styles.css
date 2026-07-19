@@ -165,6 +165,44 @@
   transform: none;
 }
 
+.prose-document {
+  color: var(--muted-foreground);
+  font-size: 1rem;
+  line-height: 1.75;
+}
+.prose-document h1,
+.prose-document h2,
+.prose-document h3,
+.prose-document h4 {
+  color: var(--foreground);
+  font-family: var(--font-serif);
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+  margin: 2.5rem 0 1rem;
+  scroll-margin-top: 2rem;
+}
+.prose-document h1 { font-size: clamp(2.2rem, 5vw, 4rem); margin-top: 0; }
+.prose-document h2 { font-size: clamp(1.8rem, 4vw, 2.7rem); }
+.prose-document h3 { font-size: 1.7rem; }
+.prose-document h4 { font-size: 1.3rem; }
+.prose-document p { margin: 1rem 0; }
+.prose-document a { color: var(--foreground); text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 0.2em; }
+.prose-document strong { color: var(--foreground); font-weight: 650; }
+.prose-document code { border: 1px solid var(--color-hairline); border-radius: 0.3rem; background: color-mix(in oklab, var(--foreground) 6%, transparent); color: var(--foreground); font-family: var(--font-mono); font-size: 0.84em; padding: 0.1rem 0.3rem; }
+.prose-document pre { overflow-x: auto; border: 1px solid var(--color-hairline); border-radius: 0.9rem; background: color-mix(in oklab, var(--background) 80%, var(--foreground)); color: var(--foreground); margin: 1.5rem 0; padding: 1.1rem 1.2rem; }
+.prose-document pre code { border: 0; background: transparent; padding: 0; white-space: pre; }
+.prose-document blockquote { border-left: 2px solid var(--accent-violet); margin: 1.5rem 0; padding-left: 1rem; color: var(--foreground); }
+.prose-document ul,
+.prose-document ol { margin: 1rem 0; padding-left: 1.5rem; }
+.prose-document li { margin: 0.35rem 0; padding-left: 0.25rem; }
+.prose-document ul { list-style: disc; }
+.prose-document ol { list-style: decimal; }
+.prose-table-wrap { overflow-x: auto; margin: 1.5rem 0; }
+.prose-document table { border-collapse: collapse; min-width: 100%; font-size: 0.9rem; }
+.prose-document th,
+.prose-document td { border: 1px solid var(--color-hairline); padding: 0.65rem 0.75rem; text-align: left; vertical-align: top; }
+.prose-document th { color: var(--foreground); background: color-mix(in oklab, var(--foreground) 6%, transparent); font-weight: 650; }
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

@@ -12,11 +12,11 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
-const BRIEFING = "/docs/tim-berners-lee-briefing.md";
-const CONTRACT = "/docs/hyperactive-web-v0.1.md";
-const RFC_DRAFT = "/docs/draft-hyperactive-web-00.md";
-const V02_PROFILE = "/docs/hyperactive-web-v0.2-identity-provenance.md";
-const IDENTITY_BRIEFING = "/docs/identity-provenance-briefing.md";
+const BRIEFING = "/docs/tim-berners-lee-briefing";
+const CONTRACT = "/docs/hyperactive-web-v0.1";
+const RFC_DRAFT = "/docs/draft-hyperactive-web-00";
+const V02_PROFILE = "/docs/hyperactive-web-v0.2-identity-provenance";
+const IDENTITY_BRIEFING = "/docs/identity-provenance-briefing";
 const FIXTURES = "/conformance/v0.1/fixtures/manifest.json";
 
 const primaryLink =

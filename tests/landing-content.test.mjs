@@ -33,11 +33,11 @@ test("the public narrative does not regress to replacement-Web claims", () => {
 test("primary calls to action resolve to real routes or project resources", () => {
   assert.doesNotMatch(home, /PlaceholderButton/);
   assert.match(home, /to="\/demo"/);
-  assert.match(home, /\/docs\/tim-berners-lee-briefing\.md/);
-  assert.match(home, /\/docs\/hyperactive-web-v0\.1\.md/);
-  assert.match(home, /\/docs\/draft-hyperactive-web-00\.md/);
-  assert.match(home, /\/docs\/hyperactive-web-v0\.2-identity-provenance\.md/);
-  assert.match(home, /\/docs\/identity-provenance-briefing\.md/);
+  assert.match(home, /\/docs\/tim-berners-lee-briefing/);
+  assert.match(home, /\/docs\/hyperactive-web-v0\.1/);
+  assert.match(home, /\/docs\/draft-hyperactive-web-00/);
+  assert.match(home, /\/docs\/hyperactive-web-v0\.2-identity-provenance/);
+  assert.match(home, /\/docs\/identity-provenance-briefing/);
   assert.match(home, /\/conformance\/v0\.1\/fixtures\/manifest\.json/);
   assert.match(root, /\["RFC draft", RFC_DRAFT\]/);
   assert.match(root, /\["Identity \+ provenance v0\.2", V02_PROFILE\]/);
