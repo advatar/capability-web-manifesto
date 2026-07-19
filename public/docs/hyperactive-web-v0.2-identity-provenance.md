@@ -34,6 +34,9 @@ for semantics, C2PA/CAWG for media credentials, Verifiable Credentials for porta
 claims, WebAuthn for relying-party ceremonies, and SCITT/COSE Receipts for
 transparent statement registration.
 
+For a reviewer-facing walkthrough, start with [Identity and Provenance: an ordinary
+Web example](IdentityProvenanceBriefing.md).
+
 ## Table of Contents
 
 1. [Scope and Design Principles](#1-scope-and-design-principles)

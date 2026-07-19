@@ -16,6 +16,7 @@ const BRIEFING = "/docs/tim-berners-lee-briefing.md";
 const CONTRACT = "/docs/hyperactive-web-v0.1.md";
 const RFC_DRAFT = "/docs/draft-hyperactive-web-00.md";
 const V02_PROFILE = "/docs/hyperactive-web-v0.2-identity-provenance.md";
+const IDENTITY_BRIEFING = "/docs/identity-provenance-briefing.md";
 const FIXTURES = "/conformance/v0.1/fixtures/manifest.json";
 
 const primaryLink =
@@ -110,6 +111,9 @@ function HomePage() {
               </ExternalLink>
               <ExternalLink href={V02_PROFILE} className={secondaryLink}>
                 Read the identity + provenance profile
+              </ExternalLink>
+              <ExternalLink href={IDENTITY_BRIEFING} className={secondaryLink}>
+                Start with the HTTP example
               </ExternalLink>
             </div>
           </Reveal>
@@ -336,6 +340,9 @@ function HomePage() {
             </p>
             <ExternalLink href={V02_PROFILE} className={`${secondaryLink} mt-7`}>
               Read the formal v0.2 profile
+            </ExternalLink>
+            <ExternalLink href={IDENTITY_BRIEFING} className={`${secondaryLink} mt-3`}>
+              Start with the ordinary HTTP example
             </ExternalLink>
           </Reveal>
 

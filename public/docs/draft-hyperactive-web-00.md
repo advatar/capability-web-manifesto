@@ -447,6 +447,9 @@ The formal profile draft is [Hyperactive Web Identity and Provenance Profile
 v0.2](HyperactiveWebV0.2IdentityProvenance.md). It defines the candidate statement,
 signed-envelope, evidence, verification, HTTP discovery, and conformance contract.
 
+The shortest reviewer walkthrough is [Identity and Provenance: an ordinary Web
+example](IdentityProvenanceBriefing.md).
+
 ### 13.1. Model
 
 Identity and provenance would become linked Web resources rather than trusted scalar

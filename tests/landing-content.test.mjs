@@ -37,9 +37,11 @@ test("primary calls to action resolve to real routes or project resources", () =
   assert.match(home, /\/docs\/hyperactive-web-v0\.1\.md/);
   assert.match(home, /\/docs\/draft-hyperactive-web-00\.md/);
   assert.match(home, /\/docs\/hyperactive-web-v0\.2-identity-provenance\.md/);
+  assert.match(home, /\/docs\/identity-provenance-briefing\.md/);
   assert.match(home, /\/conformance\/v0\.1\/fixtures\/manifest\.json/);
   assert.match(root, /\["RFC draft", RFC_DRAFT\]/);
   assert.match(root, /\["Identity \+ provenance v0\.2", V02_PROFILE\]/);
+  assert.match(root, /\["HTTP provenance example", IDENTITY_BRIEFING\]/);
 
   const navigationTargets = [...root.matchAll(/href: "\/#([a-z-]+)"/g)].map((match) => match[1]);
   const sectionTargets = new Set([...home.matchAll(/id="([a-z-]+)"/g)].map((match) => match[1]));
@@ -53,6 +55,7 @@ test("public evidence assets are complete and internally consistent", () => {
   const contract = read("public/docs/hyperactive-web-v0.1.md");
   const rfcDraft = read("public/docs/draft-hyperactive-web-00.md");
   const v02Profile = read("public/docs/hyperactive-web-v0.2-identity-provenance.md");
+  const identityBriefing = read("public/docs/identity-provenance-briefing.md");
   const fixtureRoot = resolve(projectRoot, "public/conformance/v0.1/fixtures");
   const manifest = JSON.parse(read("public/conformance/v0.1/fixtures/manifest.json"));
 
@@ -60,6 +63,7 @@ test("public evidence assets are complete and internally consistent", () => {
   assert.match(contract, /^# Hyperactive Web .* Contract v0\.1/m);
   assert.match(rfcDraft, /^# Hyperactive Web Service Cards and Capability Links/m);
   assert.match(v02Profile, /^# Hyperactive Web Identity and Provenance Profile v0\.2/m);
+  assert.match(identityBriefing, /^# Identity and Provenance: an ordinary Web example/m);
   assert.equal(manifest.schemaVersion, "0.1");
   assert.equal(
     manifest.valid.length + manifest.invalid.length + manifest.contractVectors.length,
@@ -75,11 +79,13 @@ test("public evidence assets are complete and internally consistent", () => {
   const parentContract = resolve(parentRoot, "Docs/HyperactiveWebV0.1.md");
   const parentRfcDraft = resolve(parentRoot, "Docs/draft-hyperactive-web-00.md");
   const parentV02Profile = resolve(parentRoot, "Docs/HyperactiveWebV0.2IdentityProvenance.md");
-  if (existsSync(parentBriefing) && existsSync(parentContract) && existsSync(parentRfcDraft) && existsSync(parentV02Profile)) {
+  const parentIdentityBriefing = resolve(parentRoot, "Docs/IdentityProvenanceBriefing.md");
+  if (existsSync(parentBriefing) && existsSync(parentContract) && existsSync(parentRfcDraft) && existsSync(parentV02Profile) && existsSync(parentIdentityBriefing)) {
     assert.equal(briefing, readFileSync(parentBriefing, "utf8"));
     assert.equal(contract, readFileSync(parentContract, "utf8"));
     assert.equal(rfcDraft, readFileSync(parentRfcDraft, "utf8"));
     assert.equal(v02Profile, readFileSync(parentV02Profile, "utf8"));
+    assert.equal(identityBriefing, readFileSync(parentIdentityBriefing, "utf8"));
   }
 });
 
