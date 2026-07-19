@@ -81,6 +81,18 @@ function HomePage() {
             </p>
           </Reveal>
 
+          <Reveal delay={200}>
+            <div className="mt-7 inline-flex max-w-3xl items-center gap-3 rounded-xl border border-[var(--accent-violet)]/30 bg-[var(--accent-violet)]/10 px-4 py-3 text-sm leading-relaxed text-foreground/85">
+              <span className="font-mono text-[0.65rem] uppercase tracking-[0.16em] text-[var(--accent-violet)]">
+                v0.2 draft
+              </span>
+              <span>
+                Identity and provenance are becoming first-class: who contributed, which model or
+                tool participated, what evidence supports the claim, and what remains unknown.
+              </span>
+            </div>
+          </Reveal>
+
           <Reveal delay={240}>
             <div className="mt-10 flex flex-wrap items-center gap-3">
               <Link
@@ -95,6 +107,9 @@ function HomePage() {
               </Link>
               <ExternalLink href={BRIEFING} className={secondaryLink}>
                 Read the discussion brief
+              </ExternalLink>
+              <ExternalLink href={V02_PROFILE} className={secondaryLink}>
+                Read the identity + provenance profile
               </ExternalLink>
             </div>
           </Reveal>
@@ -307,10 +322,45 @@ function HomePage() {
         </div>
       </Section>
 
+      <Section id="identity">
+        <div className="grid items-start gap-12 lg:grid-cols-12 lg:gap-16">
+          <Reveal className="lg:col-span-5">
+            <SectionHeading
+              eyebrow="§ 05 · Identity + provenance"
+              title={<>Not a badge. A chain of evidence.</>}
+            />
+            <p className="mt-6 leading-relaxed text-muted-foreground">
+              The proposed v0.2 profile records contributions instead of guessing a single human-or-AI
+              verdict. It keeps the principal, node, actor, executor, model, signer, issuer, and verifier
+              distinct.
+            </p>
+            <ExternalLink href={V02_PROFILE} className={`${secondaryLink} mt-7`}>
+              Read the formal v0.2 profile
+            </ExternalLink>
+          </Reveal>
+
+          <Reveal delay={120} className="lg:col-span-7">
+            <div className="grid gap-3 sm:grid-cols-2">
+              {[
+                ["Contributions", "Prompted, generated, edited, reviewed, approved, signed, and delivered roles remain visible."],
+                ["Evidence", "Signed statements bind exact artifacts to credentials, model attestations, mandates, and receipts."],
+                ["Verification", "Consumers report content binding, identity, participation, chronology, transparency, and lineage separately."],
+                ["Honest uncertainty", "Missing or stripped provenance means unknown—not proof that something was human-made."],
+              ].map(([title, body]) => (
+                <div key={title} className="rounded-2xl border hairline bg-card/35 p-6">
+                  <h3 className="font-display text-2xl text-foreground">{title}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{body}</p>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+      </Section>
+
       <Section id="evidence">
         <Reveal>
           <SectionHeading
-            eyebrow="§ 05 · Evidence"
+            eyebrow="§ 06 · Evidence"
             title={<>Working code, clearly separated from the hypothesis.</>}
           />
         </Reveal>

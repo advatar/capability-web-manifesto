@@ -15,6 +15,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 const NAV = [
   { href: "/#proposal", label: "Proposal" },
   { href: "/#contract", label: "Contract" },
+  { href: "/#identity", label: "Identity" },
   { href: "/#architecture", label: "Architecture" },
   { href: "/#evidence", label: "Evidence" },
   { href: "/#questions", label: "Questions" },

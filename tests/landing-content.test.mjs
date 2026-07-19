@@ -95,6 +95,8 @@ test("the landing surface carries evidence, lineage, and open design gates", () 
     "Ethical Web Principles",
     "Proposed in v0.2",
     "Contribution graphs distinguish human, agent, model",
+    "Identity + provenance",
+    "Not a badge. A chain of evidence.",
   ]) {
     assert.ok(home.includes(requiredText), `missing ${requiredText}`);
   }
