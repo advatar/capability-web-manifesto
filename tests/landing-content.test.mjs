@@ -36,8 +36,10 @@ test("primary calls to action resolve to real routes or project resources", () =
   assert.match(home, /\/docs\/tim-berners-lee-briefing\.md/);
   assert.match(home, /\/docs\/hyperactive-web-v0\.1\.md/);
   assert.match(home, /\/docs\/draft-hyperactive-web-00\.md/);
+  assert.match(home, /\/docs\/hyperactive-web-v0\.2-identity-provenance\.md/);
   assert.match(home, /\/conformance\/v0\.1\/fixtures\/manifest\.json/);
   assert.match(root, /\["RFC draft", RFC_DRAFT\]/);
+  assert.match(root, /\["Identity \+ provenance v0\.2", V02_PROFILE\]/);
 
   const navigationTargets = [...root.matchAll(/href: "\/#([a-z-]+)"/g)].map((match) => match[1]);
   const sectionTargets = new Set([...home.matchAll(/id="([a-z-]+)"/g)].map((match) => match[1]));
@@ -50,12 +52,14 @@ test("public evidence assets are complete and internally consistent", () => {
   const briefing = read("public/docs/tim-berners-lee-briefing.md");
   const contract = read("public/docs/hyperactive-web-v0.1.md");
   const rfcDraft = read("public/docs/draft-hyperactive-web-00.md");
+  const v02Profile = read("public/docs/hyperactive-web-v0.2-identity-provenance.md");
   const fixtureRoot = resolve(projectRoot, "public/conformance/v0.1/fixtures");
   const manifest = JSON.parse(read("public/conformance/v0.1/fixtures/manifest.json"));
 
   assert.match(briefing, /^# A Capability Layer for the Web/m);
   assert.match(contract, /^# Hyperactive Web .* Contract v0\.1/m);
   assert.match(rfcDraft, /^# Hyperactive Web Service Cards and Capability Links/m);
+  assert.match(v02Profile, /^# Hyperactive Web Identity and Provenance Profile v0\.2/m);
   assert.equal(manifest.schemaVersion, "0.1");
   assert.equal(
     manifest.valid.length + manifest.invalid.length + manifest.contractVectors.length,
@@ -70,10 +74,12 @@ test("public evidence assets are complete and internally consistent", () => {
   const parentBriefing = resolve(parentRoot, "Docs/TimBernersLeeBriefing.md");
   const parentContract = resolve(parentRoot, "Docs/HyperactiveWebV0.1.md");
   const parentRfcDraft = resolve(parentRoot, "Docs/draft-hyperactive-web-00.md");
-  if (existsSync(parentBriefing) && existsSync(parentContract) && existsSync(parentRfcDraft)) {
+  const parentV02Profile = resolve(parentRoot, "Docs/HyperactiveWebV0.2IdentityProvenance.md");
+  if (existsSync(parentBriefing) && existsSync(parentContract) && existsSync(parentRfcDraft) && existsSync(parentV02Profile)) {
     assert.equal(briefing, readFileSync(parentBriefing, "utf8"));
     assert.equal(contract, readFileSync(parentContract, "utf8"));
     assert.equal(rfcDraft, readFileSync(parentRfcDraft, "utf8"));
+    assert.equal(v02Profile, readFileSync(parentV02Profile, "utf8"));
   }
 });
 
@@ -87,6 +93,8 @@ test("the landing surface carries evidence, lineage, and open design gates", () 
     "Solid",
     "HTTP + Web Linking",
     "Ethical Web Principles",
+    "Proposed in v0.2",
+    "Contribution graphs distinguish human, agent, model",
   ]) {
     assert.ok(home.includes(requiredText), `missing ${requiredText}`);
   }

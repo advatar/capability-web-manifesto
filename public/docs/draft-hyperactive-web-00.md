@@ -12,6 +12,10 @@ independent schemas and conformance fixtures remain authoritative for v0.1 wire
 validation. If this draft and those fixtures disagree, the discrepancy is a review
 finding to resolve before the draft is called a compatible restatement.
 
+Section 13 records a proposed v0.2 identity-and-provenance profile for review. It is
+informative with respect to v0.1, has no conformance claims, and does not alter the
+frozen v0.1 schemas or fixtures.
+
 The key words **MUST**, **MUST NOT**, **REQUIRED**, **SHALL**, **SHALL NOT**,
 **SHOULD**, **SHOULD NOT**, **RECOMMENDED**, **NOT RECOMMENDED**, **MAY**, and
 **OPTIONAL** in this document are to be interpreted as described in BCP 14 when, and
@@ -45,9 +49,10 @@ retained provenance records what was actually verified, approved, invoked, and f
 10. [Contract Addresses](#10-contract-addresses)
 11. [Profiles and Extensions](#11-profiles-and-extensions)
 12. [Versioning and Conformance](#12-versioning-and-conformance)
-13. [Security and Privacy Considerations](#13-security-and-privacy-considerations)
-14. [IANA Considerations](#14-iana-considerations)
-15. [References](#15-references)
+13. [Proposed v0.2 Identity and Provenance Profile](#13-proposed-v02-identity-and-provenance-profile)
+14. [Security and Privacy Considerations](#14-security-and-privacy-considerations)
+15. [IANA Considerations](#15-iana-considerations)
+16. [References](#16-references)
 Appendix A. [Complete Example](#appendix-a-complete-example)
 
 ## 1. Introduction
@@ -431,11 +436,164 @@ package is implementation-independent and is not evidence of public discovery,
 provider trust, correct fulfillment, privacy, accessibility, or standards-body
 conformance.
 
-## 13. Security and Privacy Considerations
+## 13. Proposed v0.2 Identity and Provenance Profile
+
+This section is a design proposal, not part of v0.1 conformance. Capitalized
+requirements here describe candidate v0.2 constraints only. The complete rationale,
+standards mapping, threat model, wire example, and migration path are in [Verifiable
+Identity and Provenance for the Hyperactive Web](https://github.com/advatar/UniversalInteractionKit/blob/main/Docs/VerifiableIdentityAndProvenance.md).
+
+The formal profile draft is [Hyperactive Web Identity and Provenance Profile
+v0.2](HyperactiveWebV0.2IdentityProvenance.md). It defines the candidate statement,
+signed-envelope, evidence, verification, HTTP discovery, and conformance contract.
+
+### 13.1. Model
+
+Identity and provenance would become linked Web resources rather than trusted scalar
+fields. Every addressable artifact and consequential interaction could expose a
+content-bound provenance statement describing the exact subject commitment, activity,
+human and non-human contributions, roles, delegation, consent, derivation, and typed
+evidence references.
+
+The semantic graph SHOULD map to W3C PROV entities, activities, agents, qualified
+roles, derivation, association, and delegation. Media provenance SHOULD remain in
+C2PA/CAWG form. Identity and qualification claims SHOULD reuse Verifiable Credentials
+or another independently verifiable credential format. Transparent statement
+registration SHOULD reuse SCITT and COSE Receipts where the deployment's trust and
+privacy model fits.
+
+The profile MUST NOT require a DID, legal identity, global ledger, or one credential
+issuer. HTTPS, DID, and other absolute subject URIs MAY coexist. A pseudonymous actor
+can have strong key-control evidence without disclosing a legal name.
+
+### 13.2. Identity roles and contributions
+
+The subject or principal, publishing node, actor, executor, model, signer, credential
+holder, issuer, recorder, and verifier MUST remain distinguishable. One entity MAY
+fill several roles, but no role inherits another role's identity or authority merely
+because their identifiers appear in the same statement.
+
+The primitive is a contribution, not a binary authorship label. Initial roles include
+conception, prompting, capture, generation, editing, review, approval, signing,
+publication, execution, recording, and delivery. Each contribution records its actor,
+activity, role, optional `actedOnBehalfOf` mandate, evidence references, and one of
+these bases:
+
+| Basis | Meaning |
+| --- | --- |
+| `observed` | Emitted by an instrumented recorder or source |
+| `declared` | Asserted by a participant or provider |
+| `inferred` | Classified from evidence, with method and confidence |
+| `signedOff` | Accepted in a defined signature or consent ceremony |
+
+These values describe evidence origin, not an ordered trust score. A controlled
+observation can be compromised, a declaration can be truthful, and a signed account
+can omit undisclosed contributors.
+
+An AI contribution SHOULD identify the provider, service or deployment, agent build,
+model family and version, immutable model digest when available, invocation, tool
+dependencies, and input/output commitments. A closed provider MAY issue a signed
+attestation for an opaque immutable deployment identifier rather than disclose model
+weights. A probabilistic detector result MUST remain an `inferred` assertion and MUST
+NOT become a definitive actor identity.
+
+### 13.3. Evidence and verification
+
+A provenance statement binds claims to subject commitments. Native evidence remains in
+its own verifiable format and is referenced by URI and digest. A post-signing
+transparency receipt remains outside the signed statement so it can be attached without
+creating a circular commitment.
+
+A consumer computes a new verification report under explicit local policy. It MUST NOT
+trust or republish a publisher-supplied `verified` result. At minimum, the report can
+evaluate these independent propositions:
+
+| Check | Proposition |
+| --- | --- |
+| Subject binding | Supplied bytes match the declared commitment |
+| Statement signature | The identified key signed the profiled statement bytes |
+| Key status | The key was acceptable under policy at the relevant time |
+| Identity binding | An accepted issuer linked claims to a signer or named actor |
+| Participation | A ceremony or recorder supports a stated contribution |
+| Delegation | A mandate covered delegate, capability, audience, and time |
+| Environment | Evidence supports a stated device, tool, model, or deployment |
+| Chronology | Timestamp or anchor evidence covers the statement or log view |
+| Transparency | Inclusion and requested consistency checks pass |
+| Lineage continuity | Every declared parent resolves and verifies under policy |
+
+Each check returns `pass`, `fail`, `indeterminate`, or `notChecked`, with its evidence,
+trust roots, policy identifier, verifier version, and verification time. There is no
+universal trust score and no `isHumanMade` verification result.
+
+A passing signature proves control of a signing key for signed bytes. A passing
+credential proves that an accepted issuer made a scoped claim. A WebAuthn ceremony can
+support user presence or user verification at a relying party. A transparency receipt
+can support statement inclusion in a particular log view. None alone proves authorship,
+truth, ownership, intent, legal effect, complete disclosure, or absence of AI.
+
+### 13.4. HTTP and Service Card integration
+
+Provenance can be discovered through the W3C PROV-AQ absolute-URI relation used with
+Web Linking:
+
+```http
+HTTP/1.1 200 OK
+Content-Type: image/png
+Content-Digest: sha-256=:mEWX5Vx2kL0...:
+Link: </provenance/portrait-4>; rel="http://www.w3.org/ns/prov#has_provenance"; type="application/ld+json"
+```
+
+An HTML representation can expose the same relation:
+
+```html
+<link rel="http://www.w3.org/ns/prov#has_provenance"
+      type="application/ld+json"
+      href="/provenance/portrait-4">
+```
+
+The provenance resource can negotiate a PROV-O JSON-LD projection, a human-readable
+view, or links to native evidence. HTTP Message Signatures can bind selected response
+components and `Content-Digest` for an exchange. They do not replace durable,
+artifact-level commitments and signatures that remain verifiable after transport or
+storage changes.
+
+A future Service Card profile would have three provenance surfaces: card provenance
+binding the representation to publisher, recorder, node, and delegated principal;
+capability evidence declarations stating accepted input and offered output profiles;
+and invocation provenance binding request, selected contract, local policy decision,
+consent or approval, mandate, tools and models, result commitment, and retained parent
+artifacts.
+
+These are publisher declarations and MUST NOT lower consumer evidence requirements.
+The v0.1 `ArtifactRecord.parents` chain can migrate into typed PROV usage and
+derivation relations. Existing approval, payment, usage-grant, workflow, and
+fulfillment records become evidence references; existing C2PA, VC, MadeMark, ARK,
+SLSA, and SCITT artifacts remain intact.
+
+### 13.5. Privacy and incomplete provenance
+
+Public logs SHOULD contain minimal commitments and service metadata, not names,
+emails, prompts, file paths, private inputs, or raw credentials. Implementations
+SHOULD support pseudonymous or pairwise identifiers, salted commitments, selective
+disclosure, access-controlled evidence, and provenance for redacted projections.
+
+Consent, withholding, disputes, corrections, key rotation, and supersession SHOULD be
+first-class events. Missing or stripped provenance means unknown; it MUST NOT be
+interpreted as evidence that content is human-made. Verification can establish the
+continuity of declared lineage but cannot prove that no participant or input was
+omitted.
+
+## 14. Security and Privacy Considerations
 
 A valid JSON Schema is not evidence that a publisher, principal, credential, price, or
 result is trustworthy. Consumers MUST treat cards and all referenced schemas,
 profiles, and metadata as untrusted input.
+
+A valid signature is not evidence that every signed assertion is accurate or complete.
+Consumers MUST preserve the distinction between a statement, its native evidence, a
+transparency receipt, and a locally computed verification report. They MUST bind
+signatures and evidence to an exact subject, context, role, activity, audience, and
+representation to resist replay and splicing.
 
 Consumers MUST bound document size, nesting depth, schema complexity, and remote
 reference resolution. They MUST NOT automatically dereference arbitrary profile or
@@ -460,7 +618,7 @@ or that their implementations have equivalent behavior.
 
 Unknown extensions MUST NOT silently weaken core validation or local policy.
 
-## 14. IANA Considerations
+## 15. IANA Considerations
 
 This document has no IANA actions.
 
@@ -470,9 +628,9 @@ them with existing Web of Things or other registered vocabulary, or define a pro
 instead. No new URI scheme, HTTP method, status code, authentication scheme, or HTTP
 field is requested by this draft.
 
-## 15. References
+## 16. References
 
-### 15.1. Normative References
+### 16.1. Normative References
 
 - [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119), Key words for use in RFCs to
   Indicate Requirement Levels.
@@ -486,12 +644,26 @@ field is requested by this draft.
 - [JSON Schema](https://json-schema.org/draft/2020-12/json-schema-core), Draft
   2020-12 Core.
 
-### 15.2. Informative References
+### 16.2. Informative References
 
 - [Hyperactive Web v0.1 contract](HyperactiveWebV0.1.md).
 - [Hyperactive Web research narrative](HyperactiveWeb.md).
+- [Verifiable Identity and Provenance design note](VerifiableIdentityAndProvenance.md).
 - [Standards-review briefing](TimBernersLeeBriefing.md).
 - [v0.1 conformance package](../Conformance/v0.1/README.md).
+- [RFC 8288](https://www.rfc-editor.org/rfc/rfc8288), Web Linking.
+- [RFC 9421](https://www.rfc-editor.org/rfc/rfc9421), HTTP Message Signatures.
+- [RFC 9530](https://www.rfc-editor.org/rfc/rfc9530), Digest Fields.
+- [RFC 9942](https://www.rfc-editor.org/rfc/rfc9942), COSE Receipts.
+- [RFC 9943](https://www.rfc-editor.org/rfc/rfc9943), An Architecture for
+  Trustworthy and Transparent Digital Supply Chains.
+- [W3C PROV](https://www.w3.org/TR/prov-overview/), provenance model and access
+  specifications.
+- [W3C Verifiable Credentials Data Model 2.0](https://www.w3.org/TR/vc-data-model/).
+- [W3C WebAuthn Level 3](https://www.w3.org/TR/webauthn-3/).
+- [C2PA Content Credentials 2.4](https://spec.c2pa.org/specifications/specifications/2.4/specs/ContentCredentials.html).
+- [CAWG Identity Assertion 1.2](https://cawg.io/identity/1.2/).
+- [SLSA provenance](https://slsa.dev/spec/v1.2/provenance).
 - [A2A](https://a2a-protocol.org/), Agent2Agent protocol.
 - [MCP](https://modelcontextprotocol.io/), Model Context Protocol.
 - [W3C Web of Things](https://www.w3.org/WoT/), Web of Things architecture and

@@ -15,6 +15,7 @@ export const Route = createFileRoute("/")({
 const BRIEFING = "/docs/tim-berners-lee-briefing.md";
 const CONTRACT = "/docs/hyperactive-web-v0.1.md";
 const RFC_DRAFT = "/docs/draft-hyperactive-web-00.md";
+const V02_PROFILE = "/docs/hyperactive-web-v0.2-identity-provenance.md";
 const FIXTURES = "/conformance/v0.1/fixtures/manifest.json";
 
 const primaryLink =
@@ -170,6 +171,9 @@ function HomePage() {
               <ExternalLink href={RFC_DRAFT} className={secondaryLink}>
                 RFC-style draft
               </ExternalLink>
+              <ExternalLink href={V02_PROFILE} className={secondaryLink}>
+                Identity + provenance v0.2
+              </ExternalLink>
               <ExternalLink href={FIXTURES} className={secondaryLink}>
                 Conformance fixtures
               </ExternalLink>
@@ -311,7 +315,7 @@ function HomePage() {
           />
         </Reveal>
 
-        <div className="mt-12 grid gap-5 lg:grid-cols-2">
+        <div className="mt-12 grid gap-5 lg:grid-cols-3">
           <Reveal delay={100}>
             <article className="h-full rounded-2xl border hairline bg-card/45 p-6 sm:p-8">
               <div className="font-mono text-[0.67rem] uppercase tracking-[0.18em] text-[var(--accent-blue)]">
@@ -357,12 +361,36 @@ function HomePage() {
               </ul>
             </article>
           </Reveal>
+
+          <Reveal delay={220}>
+            <article className="h-full rounded-2xl border border-dashed hairline bg-card/20 p-6 sm:p-8">
+              <div className="font-mono text-[0.67rem] uppercase tracking-[0.18em] text-[var(--accent-green)]">
+                Proposed in v0.2
+              </div>
+              <ul className="mt-6 space-y-4 text-sm leading-relaxed text-muted-foreground">
+                {[
+                  "Contribution graphs distinguish human, agent, model, tool, signer, issuer, and verifier roles.",
+                  "Signed statements bind exact artifacts to evidence, delegation, model identity, and declared lineage.",
+                  "Verification reports separate content binding, identity, participation, chronology, and transparency checks.",
+                  "Missing provenance remains unknown; the profile does not invent a human-made or AI-made verdict.",
+                ].map((item) => (
+                  <li key={item} className="flex gap-3">
+                    <span aria-hidden className="text-[var(--accent-green)]">
+                      +
+                    </span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </article>
+          </Reveal>
         </div>
 
         <Reveal delay={220} className="mt-8">
-          <div className="grid gap-px overflow-hidden rounded-2xl border hairline bg-[var(--hairline)] sm:grid-cols-3">
+          <div className="grid gap-px overflow-hidden rounded-2xl border hairline bg-[var(--hairline)] sm:grid-cols-4">
             {[
               ["Inspect", "Read the normative fields and invariants.", CONTRACT],
+              ["Prove", "Review the proposed identity and provenance profile.", V02_PROFILE],
               ["Reproduce", "Run the same fixtures in both implementations.", FIXTURES],
               ["Challenge", "Review the argument and its hardest questions.", BRIEFING],
             ].map(([title, body, href]) => (

@@ -24,6 +24,7 @@ const NAV = [
 const BRIEFING = "/docs/tim-berners-lee-briefing.md";
 const CONTRACT = "/docs/hyperactive-web-v0.1.md";
 const RFC_DRAFT = "/docs/draft-hyperactive-web-00.md";
+const V02_PROFILE = "/docs/hyperactive-web-v0.2-identity-provenance.md";
 const FIXTURES = "/conformance/v0.1/fixtures/manifest.json";
 
 function Layout({ children }: { children: ReactNode }) {
@@ -116,6 +117,7 @@ function Layout({ children }: { children: ReactNode }) {
                 ["Briefing", BRIEFING],
                 ["Contract", CONTRACT],
                 ["RFC draft", RFC_DRAFT],
+                ["Identity + provenance v0.2", V02_PROFILE],
                 ["Fixtures", FIXTURES],
               ].map(([label, href]) => (
                 <li key={label}>
