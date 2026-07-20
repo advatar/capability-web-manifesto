@@ -94,6 +94,18 @@ function HomePage() {
             </div>
           </Reveal>
 
+          <Reveal delay={220}>
+            <div className="mt-3 inline-flex max-w-3xl items-center gap-3 rounded-xl border border-[var(--accent-green)]/30 bg-[var(--accent-green)]/10 px-4 py-3 text-sm leading-relaxed text-foreground/85">
+              <span className="font-mono text-[0.65rem] uppercase tracking-[0.16em] text-[var(--accent-green)]">
+                PQ by design
+              </span>
+              <span>
+                Durable provenance uses SHAKE256/384 and ML-DSA. Hybrid proofs pair the PQ signature
+                with a classical compatibility signature during migration—without silent downgrade.
+              </span>
+            </div>
+          </Reveal>
+
           <Reveal delay={240}>
             <div className="mt-10 flex flex-wrap items-center gap-3">
               <Link
@@ -353,6 +365,7 @@ function HomePage() {
                 ["Evidence", "Signed statements bind exact artifacts to credentials, model attestations, mandates, and receipts."],
                 ["Verification", "Consumers report content binding, identity, participation, chronology, transparency, and lineage separately."],
                 ["Honest uncertainty", "Missing or stripped provenance means unknown—not proof that something was human-made."],
+                ["Post-quantum migration", "PQ is the durable baseline; hybrid-strict proofs preserve classical interoperability without making it the trust anchor."],
               ].map(([title, body]) => (
                 <div key={title} className="rounded-2xl border hairline bg-card/35 p-6">
                   <h3 className="font-display text-2xl text-foreground">{title}</h3>

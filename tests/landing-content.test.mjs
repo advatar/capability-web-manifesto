@@ -103,6 +103,9 @@ test("the landing surface carries evidence, lineage, and open design gates", () 
     "Contribution graphs distinguish human, agent, model",
     "Identity + provenance",
     "Not a badge. A chain of evidence.",
+    "PQ by design",
+    "SHAKE256/384 and ML-DSA",
+    "Post-quantum migration",
   ]) {
     assert.ok(home.includes(requiredText), `missing ${requiredText}`);
   }
