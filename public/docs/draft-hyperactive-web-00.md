@@ -465,6 +465,12 @@ or another independently verifiable credential format. Transparent statement
 registration SHOULD reuse SCITT and COSE Receipts where the deployment's trust and
 privacy model fits.
 
+Post-quantum durability is a first-class v0.2 requirement. The proposed baseline is
+`shake256-384` for durable commitments and ML-DSA-65 or ML-DSA-87 for signatures.
+The proposed `ActiveChain-HYBRID-1` profile combines that PQ component with a
+classical compatibility signature during migration. Hybrid components MUST be bound
+to one statement and MUST NOT silently downgrade to classical-only verification.
+
 The profile MUST NOT require a DID, legal identity, global ledger, or one credential
 issuer. HTTPS, DID, and other absolute subject URIs MAY coexist. A pseudonymous actor
 can have strong key-control evidence without disclosing a legal name.

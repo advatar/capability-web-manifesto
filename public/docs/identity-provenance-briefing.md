@@ -49,7 +49,7 @@ presence of a “human” or “AI” badge, but the separately attributable con
     "subject": {
       "id": "https://studio.example/works/portrait-4",
       "mediaType": "image/png",
-      "commitment": { "algorithm": "sha-256", "digest": "..." }
+      "commitment": { "algorithm": "shake256-384", "digest": "..." }
     },
     "activity": {
       "id": "https://studio.example/activities/portrait-4",
@@ -57,7 +57,7 @@ presence of a “human” or “AI” badge, but the separately attributable con
       "used": [{
         "id": "https://studio.example/inputs/prompt-4",
         "relation": "prompt",
-        "commitment": { "algorithm": "sha-256", "digest": "..." }
+        "commitment": { "algorithm": "shake256-384", "digest": "..." }
       }]
     },
     "contributions": [
@@ -110,11 +110,10 @@ presence of a “human” or “AI” badge, but the separately attributable con
     ]
   },
   "proofs": [{
-    "format": "COSE_Sign1",
-    "keyId": "https://studio.example/keys/signing-1",
-    "algorithm": "ES256",
-    "statementDigest": "sha256:...",
-    "signature": "..."
+    "format": "ActiveChain-HYBRID-1",
+    "pq": { "keyId": "https://studio.example/keys/pq-1", "algorithm": "ML-DSA-65", "signature": "..." },
+    "classical": { "keyId": "https://studio.example/keys/classical-1", "algorithm": "Ed25519", "signature": "..." },
+    "statementDigest": "shake256-384:..."
   }],
   "contentCredentials": [{
     "format": "C2PA",
@@ -137,7 +136,7 @@ presence of a “human” or “AI” badge, but the separately attributable con
 | `contentCredentials` | [C2PA](https://spec.c2pa.org/specifications/specifications/2.4/specs/ContentCredentials.html) + [CAWG](https://cawg.io/identity/1.2/) | Signed media history and actor assertions |
 | actor credential evidence | [Verifiable Credentials](https://www.w3.org/TR/vc-data-model/) | Portable identity and qualification claims |
 | `webauthn-42` | [WebAuthn](https://www.w3.org/TR/webauthn-3/) | A relying-party user-presence or user-verification ceremony |
-| `proofs` | [COSE](https://www.rfc-editor.org/rfc/rfc9052) or VC Data Integrity | Signature over defined statement bytes |
+| `proofs` | [COSE](https://www.rfc-editor.org/rfc/rfc9052), VC Data Integrity, and the ActiveChain-HYBRID-1 profile | PQ-plus-classical signature transition over defined statement bytes |
 | `transparencyReceipts` | [SCITT](https://www.rfc-editor.org/rfc/rfc9943) and [COSE Receipts](https://www.rfc-editor.org/rfc/rfc9942) | Inclusion, consistency, and transparency evidence |
 | model attestation | [SLSA](https://slsa.dev/spec/v1.2/provenance), [in-toto](https://in-toto.io/), or SPDX | Build and supply-chain identity for software/models |
 

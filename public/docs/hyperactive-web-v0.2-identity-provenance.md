@@ -82,7 +82,9 @@ A conforming v0.2 profile implementation:
 7. MUST preserve native evidence formats and their verification semantics.
 8. SHOULD support pseudonymous identifiers, commitments, selective disclosure,
    redaction, and access-controlled evidence.
-9. MUST NOT require a DID, legal identity, global blockchain, or particular issuer.
+9. MUST provide a post-quantum verification path for durable statements and
+   commitments. A classical-only proof MUST NOT be the sole high-assurance path.
+10. MUST NOT require a DID, legal identity, global blockchain, or particular issuer.
 
 ### 1.3. Non-goals
 
@@ -192,8 +194,10 @@ Each subject MUST contain:
 
 The commitment MUST cover exactly the bytes or canonical representation declared by
 the profile. A URI identifies a resource; it does not prove that a later retrieval
-has the same bytes. A profile SHOULD use SHA-256 or a stronger registered algorithm
-and MUST identify algorithm agility explicitly.
+has the same bytes. The v0.2 PQ baseline is `shake256-384`: SHAKE256 with a
+384-bit output. A deployment MAY expose SHA-256 in an HTTP `Content-Digest` field
+for ordinary Web interoperability, but that transport digest MUST NOT replace the
+durable PQ commitment used by the provenance statement.
 
 ### 4.3. Activity
 
@@ -283,7 +287,7 @@ A Signed Provenance Envelope MUST contain `statement` and `proofs`. It MAY conta
 ```json
 {
   "statement": { "profile": "...", "id": "...", "subject": {}, "activity": {}, "contributions": [], "lineage": [], "assertions": [], "evidence": [] },
-  "proofs": [{ "format": "COSE_Sign1", "keyId": "https://example.test/keys/1", "algorithm": "ES256", "statementDigest": "sha256:...", "signature": "..." }],
+  "proofs": [{ "format": "COSE_Sign1", "keyId": "https://example.test/keys/1", "algorithm": "ML-DSA-65", "statementDigest": "shake256-384:...", "signature": "..." }],
   "contentCredentials": [],
   "transparencyReceipts": []
 }
@@ -297,7 +301,35 @@ format has the semantics of another without verifying it natively.
 
 The proof payload MUST bind the statement profile, statement identifier, statement
 digest, signer key identifier, audience or context where applicable, and creation
-time. Detached proofs MUST remain retrievable or exportable with the evidence bundle.
+time. The v0.2 PQ baseline uses ML-DSA-65 or ML-DSA-87 as defined by [NIST FIPS
+204](https://csrc.nist.gov/pubs/fips/204/final). Detached proofs MUST remain
+retrievable or exportable with the evidence bundle.
+
+The project `ActiveChain-PQ-1` interoperability profile uses JCS for canonical JSON,
+`shake256-384` for durable commitments, and ML-DSA-65 or ML-DSA-87 for signatures.
+It MAY be carried in a COSE envelope, but its algorithm identifiers and wire profile
+remain project-defined until interoperable registrations exist.
+
+For migration, the profile defines a TLS-inspired `ActiveChain-HYBRID-1` proof
+shape: one canonical statement is bound to both a PQ component (ML-DSA-65 or
+ML-DSA-87) and a classical compatibility component (for example Ed25519 or P-256).
+The suite identifier, both key identifiers, both signatures, and the statement
+digest MUST be bound together; a verifier MUST NOT silently downgrade a hybrid
+proof to classical-only verification.
+
+Verification policies are explicit:
+
+| Policy | Required result | Intended use |
+| --- | --- | --- |
+| `hybrid-strict` | PQ and classical components both pass | Migration and highest interoperability assurance |
+| `pq-required` | PQ component passes; classical component MAY be absent | Long-lived or PQ-native deployments |
+| `compatibility-only` | Classical component may pass alone | Legacy, low-assurance display only; never high-assurance authorization |
+
+This is a hybrid signature composition, not a claim that TLS hybrid key exchange
+and provenance signatures have identical constructions. Classical C2PA, VC, or HTTP
+signatures MAY be retained as supplemental evidence, but they MUST be labeled by
+their own suite and MUST NOT be the only accepted proof for a v0.2 high-assurance
+statement.
 
 ### 6.2. Native evidence
 
@@ -502,6 +534,7 @@ Things, JSON-LD, or other registered vocabularies.
 - [CAWG Identity Assertion 1.2](https://cawg.io/identity/1.2/).
 - [RFC 9421](https://www.rfc-editor.org/rfc/rfc9421), HTTP Message Signatures.
 - [RFC 9942](https://www.rfc-editor.org/rfc/rfc9942), COSE Receipts.
+- [NIST FIPS 204](https://csrc.nist.gov/pubs/fips/204/final), Module-Lattice-Based Digital Signature Standard.
 - [RFC 9943](https://www.rfc-editor.org/rfc/rfc9943), SCITT architecture.
 - [SLSA provenance](https://slsa.dev/spec/v1.2/provenance).
 - [SPDX](https://spdx.github.io/spdx-spec/v3.0.1/scope/).
