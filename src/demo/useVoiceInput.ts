@@ -1,19 +1,36 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 // Minimal typings for the Web Speech API (not in lib.dom for all targets).
+interface SpeechRecognitionResultLike {
+  readonly isFinal: boolean;
+  readonly [index: number]: { transcript: string };
+}
+
+interface SpeechRecognitionEventLike {
+  results: {
+    readonly length: number;
+    readonly [index: number]: SpeechRecognitionResultLike;
+  };
+}
+
 interface SpeechRecognitionLike {
   lang: string;
   interimResults: boolean;
   continuous: boolean;
-  onresult: ((event: any) => void) | null;
+  onresult: ((event: SpeechRecognitionEventLike) => void) | null;
   onend: (() => void) | null;
-  onerror: ((event: any) => void) | null;
+  onerror: ((event: unknown) => void) | null;
   start(): void;
   stop(): void;
 }
 
+type SpeechWindow = Window & {
+  SpeechRecognition?: new () => SpeechRecognitionLike;
+  webkitSpeechRecognition?: new () => SpeechRecognitionLike;
+};
+
 function getRecognition(): SpeechRecognitionLike | null {
-  const w = window as any;
+  const w = window as SpeechWindow;
   const Ctor = w.SpeechRecognition || w.webkitSpeechRecognition;
   return Ctor ? new Ctor() : null;
 }
@@ -35,13 +52,19 @@ export interface VoiceInput {
  * with the recognized phrase when the user stops speaking.
  */
 export function useVoiceInput(onFinal: (text: string) => void): VoiceInput {
+  // The server and first browser render must agree. Detect browser-only
+  // capabilities after hydration instead of constructing a recognizer in render.
+  const [supported, setSupported] = useState(false);
   const [listening, setListening] = useState(false);
   const [transcript, setTranscript] = useState("");
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
   const onFinalRef = useRef(onFinal);
   onFinalRef.current = onFinal;
 
-  const supported = typeof window !== "undefined" && !!getRecognition();
+  useEffect(() => {
+    const w = window as SpeechWindow;
+    setSupported(!!(w.SpeechRecognition || w.webkitSpeechRecognition));
+  }, []);
 
   const start = useCallback(() => {
     const recognition = getRecognition();
@@ -49,7 +72,7 @@ export function useVoiceInput(onFinal: (text: string) => void): VoiceInput {
     recognition.lang = "en-US";
     recognition.interimResults = true;
     recognition.continuous = false;
-    recognition.onresult = (event: any) => {
+    recognition.onresult = (event) => {
       let text = "";
       for (let i = 0; i < event.results.length; i++) {
         text += event.results[i][0].transcript;

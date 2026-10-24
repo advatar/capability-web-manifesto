@@ -1,13 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { A2UISurface } from "./A2UISurface";
 import { useVoiceInput, speak, interpretYesNo } from "./useVoiceInput";
-import type { DynamicUIDocument, JSONValue } from "./types";
+import type { DynamicUIAffordance, DynamicUIDocument, JSONValue } from "./types";
 import { mockPlan, livePlan, type DemoPlan, type DemoStep } from "./planner";
 
 // Default to the mock planner (no secrets). Set VITE_LIVE_PLANNER=1 and run
 // `npm run demo:server` (with OPENAI_API_KEY) to use the real ChatGPT planner.
 const USE_LIVE = (import.meta as { env?: Record<string, string> }).env?.VITE_LIVE_PLANNER === "1";
-const getPlan = (goal: string): Promise<DemoPlan> => (USE_LIVE ? livePlan(goal) : Promise.resolve(mockPlan(goal)));
+const getPlan = (goal: string): Promise<DemoPlan> =>
+  USE_LIVE ? livePlan(goal) : Promise.resolve(mockPlan(goal));
 import {
   approveStep,
   enterTravel,
@@ -26,6 +27,12 @@ const SAMPLES = [
   "Book the top hotel in Stockholm",
 ];
 
+const CAPABILITY_GOALS: Record<string, string> = {
+  "hotel.search": SAMPLES[0],
+  "hotel.premiumRates": SAMPLES[1],
+  "hotel.book": SAMPLES[2],
+};
+
 interface RunState {
   plan: DemoPlan;
   index: number;
@@ -37,20 +44,30 @@ interface RunState {
 export default function App() {
   const [goal, setGoal] = useState("");
   const [surface, setSurface] = useState<DynamicUIDocument | null>(null);
+  const [results, setResults] = useState<DynamicUIDocument[]>([]);
+  const [completed, setCompleted] = useState(false);
   const [pending, setPending] = useState<DemoOutcome["pending"]>();
   const [log, setLog] = useState<ProvenanceEvent[]>([]);
   const [listeningFor, setListeningFor] = useState<string | null>(null);
   const run = useRef<RunState | null>(null);
-  const cardSurface = useRef<DynamicUIDocument>(enterTravel("summary").document);
+  const requestID = useRef(0);
+  const [cardSurface] = useState(() => enterTravel("summary").document);
 
   useEffect(() => setLog(enterTravel("summary").provenance), []);
 
   const present = useCallback((out: DemoOutcome, speakPrompt = true) => {
-    setSurface(out.document);
+    // Completed results remain visible while later steps ask questions or wait
+    // at a gate. Only the transient prompt surface is replaced.
+    if (out.output !== undefined) {
+      setResults((prev) => [...prev, out.document]);
+      setSurface(null);
+    } else {
+      setSurface(out.document);
+    }
     setPending(out.pending);
     setLog((prev) => [...out.provenance, ...prev].slice(0, 50));
     if (speakPrompt) {
-      const q = out.document.elements.find((e) => e.type === "question") as any;
+      const q = out.document.elements.find((e) => e.type === "question");
       if (q) speak(q.prompt);
     }
   }, []);
@@ -63,28 +80,54 @@ export default function App() {
 
   // Run steps until a gate or completion, threading outputs across $refs.
   const drive = useCallback(
-    (state: RunState) => {
-      run.current = state;
-      const { plan, index, outputs } = state;
-      if (index >= plan.steps.length) {
-        present({ document: { id: { rawValue: "done" }, createdAt: "", title: "Done", elements: [{ type: "text", text: "Plan complete." }], parentArtifactIDs: [], metadata: {} }, provenance: [{ kind: "workflowTrace", detail: `completed ${plan.steps.length} steps` }] }, false);
-        return;
-      }
-      const step = plan.steps[index];
+    (initialState: RunState) => {
+      let state = initialState;
+      while (true) {
+        run.current = state;
+        const { plan, index, outputs } = state;
+        if (index >= plan.steps.length) {
+          setCompleted(true);
+          setPending(undefined);
+          setSurface(null);
+          setLog((prev) =>
+            [
+              { kind: "workflowTrace", detail: `completed ${plan.steps.length} steps` },
+              ...prev,
+            ].slice(0, 50),
+          );
+          return;
+        }
+        const step = plan.steps[index];
 
-      // Clarifying question before the step (voice).
-      if (step.ask && (step.args[step.ask.fills ?? ""] === undefined)) {
-        run.current = { ...state, asking: step };
-        present({
-          document: { id: { rawValue: "ask" }, createdAt: "", title: step.capabilityID, elements: [{ type: "question", id: step.id, prompt: step.ask.prompt, kind: step.ask.kind }], parentArtifactIDs: [], metadata: {} },
-          provenance: [{ kind: "question", detail: step.ask.prompt }],
-        });
-        return;
-      }
+        // Clarifying question before the step (voice).
+        if (step.ask && step.args[step.ask.fills ?? ""] === undefined) {
+          run.current = { ...state, asking: step };
+          present({
+            document: {
+              id: { rawValue: "ask" },
+              createdAt: "",
+              title: step.capabilityID,
+              elements: [
+                { type: "question", id: step.id, prompt: step.ask.prompt, kind: step.ask.kind },
+              ],
+              parentArtifactIDs: [],
+              metadata: {},
+            },
+            provenance: [{ kind: "question", detail: step.ask.prompt }],
+          });
+          return;
+        }
 
-      const out = followStep(bound(step, outputs));
-      present(out);
-      if (!out.pending) commit(out, state);
+        const out = followStep(bound(step, outputs));
+        present(out);
+        if (out.pending) return;
+        state = {
+          ...state,
+          index: index + 1,
+          outputs: out.output === undefined ? outputs : { ...outputs, [step.id]: out.output },
+          asking: undefined,
+        };
+      }
     },
     [present],
   );
@@ -103,15 +146,46 @@ export default function App() {
     async (g: string) => {
       const trimmed = g.trim();
       if (!trimmed) return;
+      const request = ++requestID.current;
+      run.current = null;
       setLog([]);
+      setResults([]);
+      setSurface(null);
+      setPending(undefined);
+      setCompleted(false);
       try {
         const plan = await getPlan(trimmed);
+        if (request !== requestID.current) return;
         drive({ plan, index: 0, outputs: {} });
       } catch (err) {
-        present({ document: { id: { rawValue: "err" }, createdAt: "", title: "Planner error", elements: [{ type: "text", text: String(err) }], parentArtifactIDs: [], metadata: {} }, provenance: [{ kind: "error", detail: "planner failed" }] }, false);
+        if (request !== requestID.current) return;
+        present(
+          {
+            document: {
+              id: { rawValue: "err" },
+              createdAt: "",
+              title: "Planner error",
+              elements: [{ type: "text", text: String(err) }],
+              parentArtifactIDs: [],
+              metadata: {},
+            },
+            provenance: [{ kind: "error", detail: "planner failed" }],
+          },
+          false,
+        );
       }
     },
     [drive, present],
+  );
+
+  const handleFollow = useCallback(
+    (affordance: DynamicUIAffordance) => {
+      const nextGoal = CAPABILITY_GOALS[affordance.rel];
+      if (!nextGoal) return;
+      setGoal(nextGoal);
+      void startGoal(nextGoal);
+    },
+    [startGoal],
   );
 
   // Route a gate answer (voice or tap).
@@ -124,8 +198,14 @@ export default function App() {
       // Clarifying question → fill the arg and re-drive the step.
       if (state.asking?.ask) {
         const step = state.asking;
-        const filled: DemoStep = { ...step, args: { ...step.args, [step.ask!.fills ?? "value"]: value } };
-        const plan = { ...state.plan, steps: state.plan.steps.map((s, i) => (i === state.index ? filled : s)) };
+        const filled: DemoStep = {
+          ...step,
+          args: { ...step.args, [step.ask!.fills ?? "value"]: value },
+        };
+        const plan = {
+          ...state.plan,
+          steps: state.plan.steps.map((s, i) => (i === state.index ? filled : s)),
+        };
         drive({ ...state, plan, asking: undefined });
         return;
       }
@@ -137,7 +217,20 @@ export default function App() {
           if (!out.pending) commit(out, state);
         } else {
           setLog((p) => [{ kind: "declined", detail: "user declined" }, ...p]);
-          present({ document: { id: { rawValue: "x" }, createdAt: "", title: "Cancelled", elements: [{ type: "text", text: "Okay, cancelled." }], parentArtifactIDs: [], metadata: {} }, provenance: [] }, false);
+          present(
+            {
+              document: {
+                id: { rawValue: "x" },
+                createdAt: "",
+                title: "Cancelled",
+                elements: [{ type: "text", text: "Okay, cancelled." }],
+                parentArtifactIDs: [],
+                metadata: {},
+              },
+              provenance: [],
+            },
+            false,
+          );
         }
       }
     },
@@ -156,18 +249,21 @@ export default function App() {
   });
 
   const startVoice = useCallback(() => {
-    setListeningFor(pending?.step.id ?? run.current?.asking?.id ?? "ask");
+    setListeningFor(pending?.step.capabilityID ?? run.current?.asking?.id ?? "ask");
     voice.start();
   }, [pending, voice]);
 
   return (
-    <div style={{ maxWidth: 1100, margin: "0 auto", padding: 24, fontFamily: "system-ui, sans-serif" }}>
+    <div
+      style={{ maxWidth: 1100, margin: "0 auto", padding: 24, fontFamily: "system-ui, sans-serif" }}
+    >
       <header style={{ marginBottom: 20 }}>
         <h1 style={{ margin: 0 }}>Hyperactive Web — Travel demo</h1>
         <p style={{ color: "#666", marginTop: 6 }}>
-          A planner emits a multi-step plan; the runtime composes the steps ($ref binds one step's output into the
-          next) and applies the gates — identity / elicitation / confirmation / payment — as A2UI surfaces.
-          Questions are answerable by voice.{voice.supported ? "" : " (Voice not supported here.)"}
+          A planner emits a multi-step plan; the runtime composes the steps ($ref binds one step's
+          output into the next) and applies the gates — identity / elicitation / confirmation /
+          payment — as A2UI surfaces. Questions are answerable by voice.
+          {voice.supported ? "" : " (Voice not supported here.)"}
         </p>
       </header>
 
@@ -179,19 +275,40 @@ export default function App() {
           onChange={(e) => setGoal(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && startGoal(goal)}
         />
-        <button onClick={() => startGoal(goal)} style={btn(true)}>Plan & run</button>
+        <button onClick={() => startGoal(goal)} style={btn(true)}>
+          Plan & run
+        </button>
       </div>
       <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 24 }}>
         {SAMPLES.map((s) => (
-          <button key={s} onClick={() => { setGoal(s); startGoal(s); }} style={chip()}>{s}</button>
+          <button
+            key={s}
+            onClick={() => {
+              setGoal(s);
+              startGoal(s);
+            }}
+            style={chip()}
+          >
+            {s}
+          </button>
         ))}
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 24, alignItems: "start" }}>
+      <div
+        style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 24, alignItems: "start" }}
+      >
         <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-          <section style={panel()}><A2UISurface document={cardSurface.current} /></section>
+          <section style={panel()}>
+            <A2UISurface document={cardSurface} onFollow={handleFollow} />
+          </section>
+          {results.map((document) => (
+            <section key={document.id.rawValue} style={panel()}>
+              <A2UISurface document={document} />
+            </section>
+          ))}
+          {completed && <p role="status">Plan complete.</p>}
           {surface && (
-            <section style={panel()}>
+            <section key={surface.id.rawValue} style={panel()}>
               <A2UISurface
                 document={surface}
                 onAnswer={handleAnswer}
@@ -212,14 +329,25 @@ export default function App() {
                 }}
                 listeningFor={voice.listening ? listeningFor : null}
               />
-              {voice.listening && <p style={{ color: "#c62828", fontSize: 13 }}>● Listening… "{voice.transcript}"</p>}
+              {voice.listening && (
+                <p style={{ color: "#c62828", fontSize: 13 }}>● Listening… "{voice.transcript}"</p>
+              )}
             </section>
           )}
         </div>
 
         <aside style={{ ...panel(), position: "sticky", top: 16 }}>
           <h3 style={{ marginTop: 0 }}>Provenance</h3>
-          <ol style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 8 }}>
+          <ol
+            style={{
+              listStyle: "none",
+              padding: 0,
+              margin: 0,
+              display: "flex",
+              flexDirection: "column",
+              gap: 8,
+            }}
+          >
             {log.map((e, i) => (
               <li key={i} style={{ fontSize: 13 }}>
                 <span style={{ fontFamily: "monospace", color: "#1565c0" }}>{e.kind}</span>
@@ -237,8 +365,22 @@ function panel(): React.CSSProperties {
   return { border: "1px solid #e3e3e3", borderRadius: 16, padding: 18, background: "#fafafa" };
 }
 function btn(primary: boolean): React.CSSProperties {
-  return { padding: "10px 16px", borderRadius: 10, border: "none", cursor: "pointer", background: primary ? "#1565c0" : "#eee", color: primary ? "#fff" : "#222" };
+  return {
+    padding: "10px 16px",
+    borderRadius: 10,
+    border: "none",
+    cursor: "pointer",
+    background: primary ? "#1565c0" : "#eee",
+    color: primary ? "#fff" : "#222",
+  };
 }
 function chip(): React.CSSProperties {
-  return { padding: "6px 12px", borderRadius: 999, border: "1px solid #ddd", background: "#fff", cursor: "pointer", fontSize: 13 };
+  return {
+    padding: "6px 12px",
+    borderRadius: 999,
+    border: "1px solid #ddd",
+    background: "#fff",
+    cursor: "pointer",
+    fontSize: 13,
+  };
 }
