@@ -66,10 +66,23 @@ CAPABILITY-REQUIRED: <base64url offer>
     "gates": [
       { "scheme": "x401", "payload": { …verbatim proof challenge… } },
       { "scheme": "x402", "payload": { …verbatim payment terms… } },
-      { "scheme": "grant", "terms": {
-          "scope": ["answer.display", "answer.cache"],
-          "training": "prohibited",
-          "attribution": "required"
+      { "scheme": "grant", "terms": {        // an ODRL 2.2 Offer
+          "@context": ["http://www.w3.org/ns/odrl.jsonld",
+                       { "x403": "https://hyperactive.network/ns/x403#",
+                         "aivocab": "https://w3c.github.io/odrl/ai-vocab/#" }],
+          "@type": "Offer",
+          "uid": "https://knowledge.example.com/policies/q2-answers",
+          "assigner": "https://knowledge.example.com",
+          "permission": [{
+            "target": "https://knowledge.example.com/gate/q2/answers",
+            "action": ["display", "x403:cache"],
+            "duty": [{ "action": "attribute" },
+                     { "action": "compensate", "x403:fulfilledBy": "x402" }]
+          }],
+          "prohibition": [{
+            "target": "https://knowledge.example.com/gate/q2/answers",
+            "action": ["aivocab:ai-training", "distribute"]
+          }]
       } }
     ]
   }]
@@ -89,7 +102,7 @@ CAPABILITY-INVOCATION: <base64url>
         ↓
 HTTP/1.1 200 OK
 CAPABILITY-RESPONSE: <base64url>
-{ "grant": <signed usage grant>,
+{ "grant": <signed ODRL Agreement, assignee = proven identity>,
   "receipts": { "x402": { "txHash": "0x…" },
                 "provenance": "receipt:…" },
   "affordances": [ { "rel": "corpus.followup", … } ] }
@@ -292,8 +305,12 @@ function X403Page() {
               delivered answer carries a signature from the doorkeeper binding{" "}
               <em>what was delivered</em> (a content hash), <em>under which contract</em>,{" "}
               <em>paid how</em>, and <em>to whom</em> — the identity proven at the door, not
-              an ephemeral bot. Scopes like <Mono>training: prohibited</Mono> and cache
-              expiries are machine-enforceable policy inputs for well-behaved runtimes.
+              an ephemeral bot. The terms are not a new format: the offer carries a W3C{" "}
+              <span className="text-foreground">ODRL</span> <Mono>Offer</Mono>, and the
+              grant is the matching <Mono>Agreement</Mono>. Prohibitions like{" "}
+              <Mono>ai-training</Mono>, duties like <Mono>attribute</Mono> and{" "}
+              <Mono>compensate</Mono>, and cache limits are machine-readable policy inputs
+              for well-behaved runtimes.
             </p>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
               This is not a DRM fantasy. A grant does not make bytes uncopyable; it makes
