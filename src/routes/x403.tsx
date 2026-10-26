@@ -29,14 +29,14 @@ const TRIAD = [
     name: "x401",
     by: "Proof",
     q: "Who are you, and what can you prove?",
-    d: "Verifiable credentials over HTTP. A wallet answers a PROOF-REQUIRED challenge with a selective-disclosure presentation — prove you're a licensed organization without revealing anything else.",
+    d: "Verifiable credentials over HTTP. A wallet answers a PROOF-REQUEST requirement with a selective-disclosure presentation in PROOF-RESPONSE — prove you're a licensed organization without revealing anything else.",
   },
   {
     code: "402",
     name: "x402",
     by: "Coinbase / x402 Foundation",
     q: "How do you pay?",
-    d: "Stablecoin payments over HTTP. A signed X-PAYMENT payload settles in ~200ms against a PAYMENT-REQUIRED challenge — no accounts, no API keys, no subscriptions.",
+    d: "Stablecoin payments over HTTP. A signed PAYMENT-SIGNATURE payload settles in ~200ms against a PAYMENT-REQUIRED challenge — no accounts, no API keys, no subscriptions.",
   },
   {
     code: "403",
